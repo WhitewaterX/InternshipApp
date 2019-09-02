@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "795305095227",
+    "firebase_url": "https://chargefinder-b3354.firebaseio.com",
+    "project_id": "chargefinder-b3354",
+    "storage_bucket": "chargefinder-b3354.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795305095227:android:95528c9a23b686db",
+        "android_client_info": {
+          "package_name": "dk.kea.class2019january.mathiasg.chargefinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "795305095227-vpvvd7mg41mc1657d660koldabv6qu3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCge9GVts7XMf4zwnTspVnmZgOUpTJh59g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "795305095227-vpvvd7mg41mc1657d660koldabv6qu3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
