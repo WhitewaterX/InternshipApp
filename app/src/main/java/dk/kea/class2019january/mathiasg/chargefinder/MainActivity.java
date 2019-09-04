@@ -19,10 +19,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted = false;
 
-    //  Fragments
-    private SectionsStatePagerAdapter mSectionsStatePagerAdapter;
-    private ViewPager mViewPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -34,19 +30,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // Fragments
-        mSectionsStatePagerAdapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.fragmentContainer);
-
-        setupViewPager(mViewPager);
     }
 
-    private void setupViewPager(ViewPager viewPager)
-    {
-        SectionsStatePagerAdapter adapter = new SectionsStatePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AboutFragment(), "AboutFragment");
-        viewPager.setAdapter(adapter);
-    }
 
     /**
      * Manipulates the map once available.
