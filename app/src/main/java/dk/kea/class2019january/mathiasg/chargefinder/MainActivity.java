@@ -1,10 +1,12 @@
 package dk.kea.class2019january.mathiasg.chargefinder;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,18 +21,57 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted = false;
 
+    private ImageButton infoButton;
+
+    // Fragments
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+    AboutFragment aboutFragment = new AboutFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+        fragmentTransaction.add(R.id.mainLayout, aboutFragment);
+        fragmentTransaction.hide(aboutFragment);
+
+        ImageButton infoButton = (ImageButton) findViewById(R.id.infoButton);
+        infoButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                fragmentTransaction.show(aboutFragment);
+                fragmentTransaction.commit();
+            }
+        });
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
