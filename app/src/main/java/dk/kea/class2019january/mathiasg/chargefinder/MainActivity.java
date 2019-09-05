@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).show(aboutFragment);
                 fragmentTransaction.commit();
+
             }
         });
 
