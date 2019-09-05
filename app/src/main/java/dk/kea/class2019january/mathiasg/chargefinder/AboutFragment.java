@@ -13,21 +13,23 @@ import androidx.fragment.app.Fragment;
 public class AboutFragment extends Fragment
 {
 
-    private ImageButton backButton;
+    private ImageButton closeButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View RootView = inflater.inflate(R.layout.about_layout, container, false);
-        backButton = (ImageButton) RootView.findViewById(R.id.closeAbout);
+        closeButton = (ImageButton) RootView.findViewById(R.id.closeAbout);
 
-        backButton.setOnClickListener(new View.OnClickListener()
+
+        closeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                getFragmentManager().beginTransaction().remove(AboutFragment.this).commit();
+                getFragmentManager().beginTransaction().hide(AboutFragment.this).commit();
+
             }
         });
 

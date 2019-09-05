@@ -41,4 +41,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="@+id/map" />
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
