@@ -19,20 +19,25 @@ public class AboutFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View RootView = inflater.inflate(R.layout.about_layout, container, false);
-        closeButton = (ImageButton) RootView.findViewById(R.id.closeAbout);
+        View view = inflater.inflate(R.layout.about_layout, container, false);
 
+        closeButton = (ImageButton) view.findViewById(R.id.closeAbout);
 
         closeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-
+                closeFragment();
             }
         });
 
-        return RootView;
+        return view;
+    }
+
+    private void closeFragment()
+    {
+
     }
 
 }

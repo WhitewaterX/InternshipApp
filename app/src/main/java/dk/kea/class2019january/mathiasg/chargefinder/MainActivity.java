@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,7 +23,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean mLocationPermissionGranted = false;
 
     private ImageButton infoButton;
+    private FrameLayout fragmentContainer;
 
+    AboutFragment aboutFragment = new AboutFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,27 +33,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+        infoButton = (ImageButton) findViewById(R.id.infoButton);
+
+
+        infoButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                openFragment(aboutFragment);
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-        ImageButton infoButton = (ImageButton) findViewById(R.id.infoButton);
-        infoButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-
-
-            }
-        });
-
     }
 
-
+    public void openFragment(AboutFragment aboutFragment)
+    {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.addToBackStack(null);
+        transaction.add(R.id.fragment_container, aboutFragment, "ABOUT_FRAGMENT").commit();
+    }
 
 
 
