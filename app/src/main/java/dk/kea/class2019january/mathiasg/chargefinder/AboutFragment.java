@@ -28,7 +28,6 @@ public class AboutFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                getFragmentManager().beginTransaction().hide(AboutFragment.this).commit();
 
             }
         });

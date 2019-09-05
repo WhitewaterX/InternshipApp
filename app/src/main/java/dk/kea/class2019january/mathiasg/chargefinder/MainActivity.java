@@ -23,11 +23,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private ImageButton infoButton;
 
-    // Fragments
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-    AboutFragment aboutFragment = new AboutFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,7 +36,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        fragmentTransaction.add(R.id.mainLayout, aboutFragment);
 
         ImageButton infoButton = (ImageButton) findViewById(R.id.infoButton);
         infoButton.setOnClickListener(new View.OnClickListener()
@@ -49,8 +43,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v)
             {
-                fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).show(aboutFragment);
-                fragmentTransaction.commit();
+
 
             }
         });
