@@ -42,7 +42,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v)
             {
-                openFragment(aboutFragment);
+                openAboutFragment(aboutFragment);
             }
         });
 
@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void openFragment(AboutFragment aboutFragment)
+    public void openAboutFragment(AboutFragment aboutFragment)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
