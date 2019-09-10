@@ -57,7 +57,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onFragmentInteraction()
+    public void aboutOnFragmentInteraction()
     {
         onBackPressed();
     }

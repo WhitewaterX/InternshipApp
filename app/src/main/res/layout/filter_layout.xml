@@ -8,39 +8,24 @@
     android:orientation="vertical"
     android:clickable="true">
 
+
     <TextView
         android:id="@+id/aboutTitle"
         android:layout_width="109dp"
         android:layout_height="76dp"
-        android:layout_marginStart="34dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="303dp"
         android:layout_marginEnd="239dp"
         android:layout_marginBottom="378dp"
         android:fontFamily="@font/fredoka_one"
-        android:text="About the App"
+        android:text="Filter options"
         android:textColor="@color/colorPurple"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/aboutText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
-        android:width="300dp"
-        android:height="25dp"
-        android:lineSpacingMultiplier="1.39"
-        android:text="This app is pretty great."
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutTitle" />
 
     <ImageButton
         android:id="@+id/closeFilter"
@@ -51,6 +36,28 @@
         app:layout_constraintTop_toTopOf="@+id/aboutTitle"
         android:src="@drawable/icon_close"
         android:background="?android:selectableItemBackground" />
+
+    <ImageView
+        android:id="@+id/type2"
+        android:layout_width="37dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="36dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTitle"
+        app:srcCompat="@drawable/plug_type2" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/type2"
+        app:layout_constraintTop_toTopOf="@+id/type2"
+        app:srcCompat="@drawable/green_dot" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

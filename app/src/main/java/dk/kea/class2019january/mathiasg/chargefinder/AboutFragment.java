@@ -43,7 +43,7 @@ public class AboutFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.about_layout, container, false);
 
-        closeAbout = view.findViewById(R.id.closeAbout);
+        closeAbout = view.findViewById(R.id.closeFilter);
 
         closeAbout.setOnClickListener(new View.OnClickListener()
         {
@@ -63,7 +63,7 @@ public class AboutFragment extends Fragment
     {
         if (mListener != null)
         {
-            mListener.onFragmentInteraction();
+            mListener.aboutOnFragmentInteraction();
         }
     }
 
@@ -91,6 +91,6 @@ public class AboutFragment extends Fragment
 
     public interface OnFragmentInteractionListener
     {
-        void onFragmentInteraction();
+        void aboutOnFragmentInteraction();
     }
 }
