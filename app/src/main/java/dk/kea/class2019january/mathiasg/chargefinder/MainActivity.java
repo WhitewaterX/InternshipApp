@@ -12,11 +12,10 @@ import android.widget.ImageButton;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, BlankFragment.OnFragmentInteractionListener
 {
     // Map
     private GoogleMap mMap;
@@ -25,7 +24,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton infoButton;
     private FrameLayout fragmentContainer;
 
-    AboutFragment aboutFragment = new AboutFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,38 +34,33 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
         infoButton = (ImageButton) findViewById(R.id.infoButton);
 
-
         infoButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                openAboutFragment(aboutFragment);
+                openAboutFragment();
             }
         });
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
     }
 
-    public void openAboutFragment(AboutFragment aboutFragment)
+    public void openAboutFragment()
     {
+        BlankFragment blankFragment = BlankFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
-        transaction.add(R.id.fragment_container, aboutFragment, "ABOUT_FRAGMENT").commit();
+        transaction.add(R.id.fragment_container, blankFragment, "BLANK_FRAGMENT").commit();
     }
 
-
-
-
-
-
-
+    @Override
+    public void onFragmentInteraction()
+    {
+        onBackPressed();
+    }
 
     /**
      * Manipulates the map once available.
