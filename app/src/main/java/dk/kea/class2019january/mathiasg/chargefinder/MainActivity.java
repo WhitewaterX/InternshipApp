@@ -15,7 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, BlankFragment.OnFragmentInteractionListener
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.OnFragmentInteractionListener
 {
     // Map
     private GoogleMap mMap;
@@ -48,12 +48,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void openAboutFragment()
     {
-        BlankFragment blankFragment = BlankFragment.newInstance();
+        AboutFragment aboutFragment = AboutFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
-        transaction.add(R.id.fragment_container, blankFragment, "BLANK_FRAGMENT").commit();
+        transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
     }
 
     @Override
