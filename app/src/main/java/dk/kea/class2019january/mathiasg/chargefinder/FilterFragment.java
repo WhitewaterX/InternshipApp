@@ -54,7 +54,6 @@ public class FilterFragment extends Fragment
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void sendBack()
     {
         if (mListener != null)
