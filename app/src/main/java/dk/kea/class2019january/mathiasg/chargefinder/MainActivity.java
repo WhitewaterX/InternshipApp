@@ -15,7 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.OnFragmentInteractionListener
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
     // Map
     private GoogleMap mMap;
@@ -43,7 +43,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
     }
 
     public void openAboutFragment()
@@ -58,6 +57,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void aboutOnFragmentInteraction()
+    {
+        onBackPressed();
+    }
+
+    public void openFilterFragment()
+    {
+        FilterFragment filterFragment = FilterFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.addToBackStack(null);
+        transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
+    }
+
+    @Override
+    public void filterOnFragmentInteraction()
     {
         onBackPressed();
     }

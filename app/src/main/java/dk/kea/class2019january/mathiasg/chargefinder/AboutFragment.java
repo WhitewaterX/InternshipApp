@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 public class AboutFragment extends Fragment
 {
 
-    private OnFragmentInteractionListener mListener;
+    private aboutOnFragmentInteractionListener mListener;
     private ImageButton closeAbout;
 
     public AboutFragment()
@@ -71,13 +71,13 @@ public class AboutFragment extends Fragment
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener)
+        if (context instanceof aboutOnFragmentInteractionListener)
         {
-            mListener = (OnFragmentInteractionListener) context;
+            mListener = (aboutOnFragmentInteractionListener) context;
         } else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement aboutOnFragmentInteractionListener");
         }
     }
 
@@ -89,7 +89,7 @@ public class AboutFragment extends Fragment
     }
 
 
-    public interface OnFragmentInteractionListener
+    public interface aboutOnFragmentInteractionListener
     {
         void aboutOnFragmentInteraction();
     }
