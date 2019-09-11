@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-
 public class AboutFragment extends Fragment
 {
 
@@ -43,7 +42,7 @@ public class AboutFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.about_layout, container, false);
 
-        closeAbout = view.findViewById(R.id.closeFilter);
+        closeAbout = view.findViewById(R.id.closeAbout);
 
         closeAbout.setOnClickListener(new View.OnClickListener()
         {

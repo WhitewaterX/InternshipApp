@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -22,6 +23,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean mLocationPermissionGranted = false;
 
     private ImageButton infoButton;
+    private Button filterButton;
     private FrameLayout fragmentContainer;
 
 
@@ -33,6 +35,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
         infoButton = (ImageButton) findViewById(R.id.infoButton);
+        filterButton = (Button) findViewById(R.id.filterButton);
 
         infoButton.setOnClickListener(new View.OnClickListener()
         {
@@ -40,6 +43,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 openAboutFragment();
+            }
+        });
+
+        filterButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                openFilterFragment();
             }
         });
 
@@ -68,7 +80,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
-        transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
+        transaction.add(R.id.fragment_container, filterFragment, "BLANK_FRAGMENT").commit();
     }
 
     @Override
