@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "795305095227-ujtn41tr331h26n7056ioaa16cf5bidl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dk.kea.class2019january.mathiasg.chargefinder",
+            "certificate_hash": "cb5c960ef84cb2159f04c8de94a594d3c2d9a0c3"
+          }
+        },
+        {
           "client_id": "795305095227-vpvvd7mg41mc1657d660koldabv6qu3a.apps.googleusercontent.com",
           "client_type": 3
         }
