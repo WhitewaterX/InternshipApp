@@ -1,13 +1,14 @@
 package dk.kea.class2019january.mathiasg.chargefinder;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import com.google.gson.annotations.Expose;
 
 public class Employee
 {
+    @Expose
     private String firstName;
+    @Expose(serialize = false)
     private int age;
+    @Expose(deserialize = false)
     private String mail;
     private String password;
 

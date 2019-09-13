@@ -16,11 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.GsonBuilder;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
@@ -69,10 +65,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
+        Employee employee = new Employee("John", 30, "john@gmail.com", "password");
 
+        String jsonResult = gson.toJson(employee);
 
+        String json = "{\"age\":30,\"firstName\":\"John\",\"mail\":\"john@gmail.com\",\"password\":\"password\"}";
+
+        Employee employee1 = gson.fromJson(json, Employee.class);
     }
 
     public void openAboutFragment()
