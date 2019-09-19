@@ -10,11 +10,26 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
@@ -28,6 +43,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button filterButton;
     private FrameLayout fragmentContainer;
 
+
+    //volley
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -62,6 +80,41 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        queue = Volley.newRequestQueue(this);
+
+        jsonParse();
+    }
+
+    public void jsonParse()
+    {
+        String url = "https://opladdinelbil.dk/data.json";
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>()
+                {
+                    @Override
+                    public void onResponse(JSONArray response)
+                    {
+
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                error.printStackTrace();
+            }
+        })
+
+    }
+
+    public void readFromUrl() throws IOException
+    {
+        URL url = new URL("https://opladdinelbil.dk/data.json");
+        InputStreamReader reader = new InputStreamReader(url.openStream());
+        Station station = new Gson().fromJson(reader, Station.class);
+
+        System.out.println(station);
     }
 
     public void openAboutFragment()
