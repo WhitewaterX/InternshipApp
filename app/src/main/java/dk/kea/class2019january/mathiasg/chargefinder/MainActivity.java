@@ -18,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,7 +40,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FrameLayout fragmentContainer;
 
     private OpladApi opladApi;
-
 
 
 
@@ -77,8 +77,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         //  Retrofit for Opladdinelbil, using Gson
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://opladdinelbil.dk/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -103,7 +101,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 List<Station> stations = response.body();
-
                 System.out.println(stations);
 
             }
@@ -114,11 +111,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 t.printStackTrace();
             }
         });
-    }
-
-    private void getStations()
-    {
-
     }
 
     public void openAboutFragment()
