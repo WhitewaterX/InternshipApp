@@ -17,16 +17,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
@@ -39,6 +37,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton infoButton;
     private Button filterButton;
     private FrameLayout fragmentContainer;
+
+    private OpladApi opladApi;
+
+
 
 
     @Override
@@ -74,89 +76,49 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        startAsyncTask();
+        //  Retrofit for Opladdinelbil, using Gson
 
-        /*
-        Gson gson = new Gson();
 
-        try
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://opladdinelbil.dk/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        //  retrofit brings life to the methods in the Oplad interface
+        opladApi = retrofit.create(OpladApi.class);
+
+        //  Call for stations
+        Call<List<Station>> call = opladApi.getStations();
+
+        //  enqueue executes on background thread
+        call.enqueue(new Callback<List<Station>>()
         {
-            Type stationType = new TypeToken<ArrayList<Station>>(){}.getType();
+            @Override
+            public void onResponse(Call<List<Station>> call, Response<List<Station>> response)
+            {
+                if(!response.isSuccessful())
+                {
+                    System.out.println(response.code());
+                    return;
+                }
 
-            URL url = new URL("https://opladdinelbil.dk/data.json");
-            InputStreamReader reader = new InputStreamReader(url.openStream());
+                List<Station> stations = response.body();
 
-            Station station = new Gson().fromJson(reader, Station.class);
+                System.out.println(stations);
 
-            List<Station> stations = new ArrayList<Station>();
-            stations.add(station);
+            }
 
-            System.out.println(stations);
-
-        }
-        catch (MalformedURLException e)
-        {
-            System.out.println("Error");
-        }
-        catch (IOException e)
-        {
-            System.out.println("Error");
-        }
-
-         */
-
+            @Override
+            public void onFailure(Call<List<Station>> call, Throwable t)
+            {
+                t.printStackTrace();
+            }
+        });
     }
 
-    public void startAsyncTask()
+    private void getStations()
     {
-        FetchAsyncTask task = new FetchAsyncTask();
-        task.execute();
-    }
 
-    private static class FetchAsyncTask extends AsyncTask<Void, List<Station>, List<Station>>
-    {
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected List<Station> doInBackground(Void... voids)
-        {
-            URL url = null;
-            try
-            {
-                url = new URL("https://opladdinelbil.dk/data.json");
-            }
-
-            catch (MalformedURLException e)
-            {
-                e.printStackTrace();
-            }
-
-            InputStreamReader reader = null;
-            try
-            {
-                reader = new InputStreamReader(url.openStream());
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-            Type stationType = new TypeToken<ArrayList<Station>>(){}.getType();
-            ArrayList<Station> stations = new Gson().fromJson(reader, stationType);
-
-            return stations;
-        }
-
-        @Override
-        protected void onPostExecute(List<Station> stations)
-        {
-            super.onPostExecute(stations);
-            System.out.println(stations);
-        }
     }
 
     public void openAboutFragment()
