@@ -4,32 +4,29 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
@@ -43,9 +40,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button filterButton;
     private FrameLayout fragmentContainer;
 
-
-    //volley
-    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -80,41 +74,89 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        queue = Volley.newRequestQueue(this);
+        startAsyncTask();
 
-        jsonParse();
-    }
+        /*
+        Gson gson = new Gson();
 
-    public void jsonParse()
-    {
-        String url = "https://opladdinelbil.dk/data.json";
-
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>()
-                {
-                    @Override
-                    public void onResponse(JSONArray response)
-                    {
-
-                    }
-                }, new Response.ErrorListener()
+        try
         {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                error.printStackTrace();
-            }
-        })
+            Type stationType = new TypeToken<ArrayList<Station>>(){}.getType();
+
+            URL url = new URL("https://opladdinelbil.dk/data.json");
+            InputStreamReader reader = new InputStreamReader(url.openStream());
+
+            Station station = new Gson().fromJson(reader, Station.class);
+
+            List<Station> stations = new ArrayList<Station>();
+            stations.add(station);
+
+            System.out.println(stations);
+
+        }
+        catch (MalformedURLException e)
+        {
+            System.out.println("Error");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error");
+        }
+
+         */
 
     }
 
-    public void readFromUrl() throws IOException
+    public void startAsyncTask()
     {
-        URL url = new URL("https://opladdinelbil.dk/data.json");
-        InputStreamReader reader = new InputStreamReader(url.openStream());
-        Station station = new Gson().fromJson(reader, Station.class);
+        FetchAsyncTask task = new FetchAsyncTask();
+        task.execute();
+    }
 
-        System.out.println(station);
+    private static class FetchAsyncTask extends AsyncTask<Void, List<Station>, List<Station>>
+    {
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected List<Station> doInBackground(Void... voids)
+        {
+            URL url = null;
+            try
+            {
+                url = new URL("https://opladdinelbil.dk/data.json");
+            }
+
+            catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            }
+
+            InputStreamReader reader = null;
+            try
+            {
+                reader = new InputStreamReader(url.openStream());
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            Type stationType = new TypeToken<ArrayList<Station>>(){}.getType();
+            ArrayList<Station> stations = new Gson().fromJson(reader, stationType);
+
+            return stations;
+        }
+
+        @Override
+        protected void onPostExecute(List<Station> stations)
+        {
+            super.onPostExecute(stations);
+            System.out.println(stations);
+        }
     }
 
     public void openAboutFragment()
