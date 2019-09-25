@@ -1,6 +1,6 @@
 package dk.kea.class2019january.mathiasg.chargefinder;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Station
 {
@@ -12,9 +12,9 @@ public class Station
     private double lat;
     private double lng;
     private String status;
-    private List<Connector> connectors;
+    private ArrayList<Connector> connectors;
 
-    public Station(String siteId, String siteName, String streetAddress, int zipCode, String cityName, double lat, double lng, String status, List<Connector> connectors)
+    public Station(String siteId, String siteName, String streetAddress, int zipCode, String cityName, double lat, double lng, String status, ArrayList<Connector> connectors)
     {
         this.siteId = siteId;
         this.siteName = siteName;
