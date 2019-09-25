@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,12 +36,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted = false;
 
+    //  UI Elements
     private ImageButton infoButton;
     private Button filterButton;
     private FrameLayout fragmentContainer;
 
+    //  Retrofit Api
     private OpladApi opladApi;
-
 
 
     @Override
@@ -85,37 +87,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //  retrofit brings life to the methods in the Oplad interface
         opladApi = retrofit.create(OpladApi.class);
 
+
+
+
+
         //  Call for stations
         Call<List<Station>> call = opladApi.getStations();
 
-        //  enqueue executes on background thread
-
-        //old
-        call.enqueue(new Callback<List<Station>>()
-        {
-            @Override
-            public void onResponse(Call<List<Station>> call, Response<List<Station>> response)
-            {
-                if(!response.isSuccessful())
-                {
-                    System.out.println(response.code());
-                    return;
-                }
-
-                List<Station> stations = response.body();
-                System.out.println(stations);
-
-            }
-
-            @Override
-            public void onFailure(Call<List<Station>> call, Throwable t)
-            {
-                t.printStackTrace();
-            }
-        });
-
-        /*
-        // new
         Callback<List<Station>> responseCallback = new Callback<List<Station>>()
         {
             @Override
@@ -128,7 +106,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 List<Station> stations = response.body();
-                System.out.println(stations);
+
+
 
             }
 
@@ -139,18 +118,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-         */
-
     }
 
-    /*
-    //new
+
+    // new
     public void getData(Call<List<Station>> call, Callback<List<Station>> callback)
     {
         call.enqueue(callback);
     }
 
-     */
+
 
     public void openAboutFragment()
     {
@@ -160,7 +137,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
-
     }
 
     @Override
