@@ -89,6 +89,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Call<List<Station>> call = opladApi.getStations();
 
         //  enqueue executes on background thread
+
+        //old
         call.enqueue(new Callback<List<Station>>()
         {
             @Override
@@ -111,7 +113,44 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 t.printStackTrace();
             }
         });
+
+        /*
+        // new
+        Callback<List<Station>> responseCallback = new Callback<List<Station>>()
+        {
+            @Override
+            public void onResponse(Call<List<Station>> call, Response<List<Station>> response)
+            {
+                if(!response.isSuccessful())
+                {
+                    System.out.println(response.code());
+                    return;
+                }
+
+                List<Station> stations = response.body();
+                System.out.println(stations);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Station>> call, Throwable t)
+            {
+                t.printStackTrace();
+            }
+        };
+
+         */
+
     }
+
+    /*
+    //new
+    public void getData(Call<List<Station>> call, Callback<List<Station>> callback)
+    {
+        call.enqueue(callback);
+    }
+
+     */
 
     public void openAboutFragment()
     {
