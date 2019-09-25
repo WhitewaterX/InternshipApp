@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -18,12 +17,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
@@ -43,7 +36,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private ArrayList<Station> stations;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,7 +50,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
         infoButton = (ImageButton) findViewById(R.id.infoButton);
         filterButton = (Button) findViewById(R.id.filterButton);
-        stations = new ArrayList<>();
+
+        // Repository for handling data
+        Repository repository = new Repository();
 
         infoButton.setOnClickListener(new View.OnClickListener()
         {
@@ -78,47 +72,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        //  Retrofit for Opladdinelbil, using Gson
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://opladdinelbil.dk/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        //  retrofit brings life to the methods in the Oplad interface
-        opladApi = retrofit.create(OpladApi.class);
-
-        getData();
+        repository.getDataFromOplad();
 
     }
-
-    public void getData()
-    {
-        Call<ArrayList<Station>> call = opladApi.getStations();
-
-        call.enqueue(new Callback<ArrayList<Station>>()
-        {
-            @Override
-            public void onResponse(Call<ArrayList<Station>> call, Response<ArrayList<Station>> response)
-            {
-                if(!response.isSuccessful())
-                {
-                    System.out.println(response.code());
-                }
-
-                stations = response.body();
-
-                System.out.println(stations);
-
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Station>> call, Throwable t)
-            {
-                t.printStackTrace();
-            }
-        });
-    }
-
 
     public void openAboutFragment()
     {
