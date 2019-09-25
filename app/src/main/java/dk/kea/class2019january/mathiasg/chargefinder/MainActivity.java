@@ -58,6 +58,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
         infoButton = (ImageButton) findViewById(R.id.infoButton);
         filterButton = (Button) findViewById(R.id.filterButton);
+        stations = new ArrayList<>();
 
         infoButton.setOnClickListener(new View.OnClickListener()
         {
@@ -77,12 +78,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
-
-
-
-
-
         //  Retrofit for Opladdinelbil, using Gson
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://opladdinelbil.dk/")
@@ -92,8 +87,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //  retrofit brings life to the methods in the Oplad interface
         opladApi = retrofit.create(OpladApi.class);
 
-        //  Define callback
-        Callback<ArrayList<Station>> responseCallback = new Callback<ArrayList<Station>>()
+        getData();
+
+    }
+
+    public void getData()
+    {
+        Call<ArrayList<Station>> call = opladApi.getStations();
+
+        call.enqueue(new Callback<ArrayList<Station>>()
         {
             @Override
             public void onResponse(Call<ArrayList<Station>> call, Response<ArrayList<Station>> response)
@@ -101,10 +103,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 if(!response.isSuccessful())
                 {
                     System.out.println(response.code());
-                    return;
                 }
 
-                ArrayList<Station> data = response.body();
+                stations = response.body();
+
+                System.out.println(stations);
 
             }
 
@@ -113,15 +116,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 t.printStackTrace();
             }
-        };
-
-        getData(responseCallback);
-
-    }
-
-    public void getData(Callback<ArrayList<Station>> callback)
-    {
-        opladApi.getStations().enqueue(callback);
+        });
     }
 
 
