@@ -2,15 +2,14 @@ package dk.kea.class2019january.mathiasg.chargefinder;
 
 import java.util.ArrayList;
 
+import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-//  TODO: Should be renamed to service
-
-public class Repository
+public class OpladService
 {
 
     //  Retrofit for Opladdinelbil, using Gson

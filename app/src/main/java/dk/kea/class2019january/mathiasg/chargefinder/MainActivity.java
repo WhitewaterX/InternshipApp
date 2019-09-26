@@ -3,6 +3,9 @@ package dk.kea.class2019january.mathiasg.chargefinder;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +20,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
@@ -31,10 +38,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button filterButton;
     private FrameLayout fragmentContainer;
 
-    //  Retrofit Api
-    private OpladApi opladApi;
-
-    private ArrayList<Station> stations;
+    private StationViewModel stationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,13 +51,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //  Views
         fragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
         infoButton = (ImageButton) findViewById(R.id.infoButton);
         filterButton = (Button) findViewById(R.id.filterButton);
 
-        // Repository for handling data
-        Repository repository = new Repository();
-
+        //  Button listeners
         infoButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -62,7 +65,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 openAboutFragment();
             }
         });
-
         filterButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -72,9 +74,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        repository.getDataFromOplad();
+        // OpladService for handling data
+        OpladService opladService = new OpladService();
+        opladService.getDataFromOplad();
+
+        //  Set up viewmodel
+        stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
+        stationViewModel.getStations().observe(this, new Observer<List<Station>>()
+        {
+            @Override
+            public void onChanged(List<Station> stations)
+            {
+                //  Notify adapter
+            }
+        });
 
     }
+
+    // private void init, for adapter
 
     public void openAboutFragment()
     {

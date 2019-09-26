@@ -1,4 +1,4 @@
-package dk.kea.class2019january.mathiasg.chargefinder;
+package dk.kea.class2019january.mathiasg.chargefinder.models;
 
 public class Connector
 {
