@@ -80,6 +80,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         //  Set up viewmodel
         stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
+
+        //  retrieves data from repo
+        stationViewModel.init();
+
+        //  observe changes
         stationViewModel.getStations().observe(this, new Observer<List<Station>>()
         {
             @Override
