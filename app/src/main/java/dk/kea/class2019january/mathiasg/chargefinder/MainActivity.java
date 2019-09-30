@@ -4,10 +4,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,7 +19,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
@@ -39,15 +38,42 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FrameLayout fragmentContainer;
 
     private StationViewModel stationViewModel;
+    private List<Station> stationsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupViews();
 
+        //  Set up viewmodel
+        stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
+
+        //  retrieves data from repo
+        stationViewModel.init();
+
+        //  observe changes
+        stationViewModel.getStations().observe(this, new Observer<List<Station>>()
+        {
+            @Override
+            public void onChanged(List<Station> stations)
+            {
+
+            }
+        });
+
+    }
+
+    public void placeMarkers()
+    {
+
+    }
+
+    public void setupViews()
+    {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -73,27 +99,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 openFilterFragment();
             }
         });
-
-        // OpladService for handling data
-        OpladService opladService = new OpladService();
-        opladService.getDataFromOplad();
-
-        //  Set up viewmodel
-        stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
-
-        //  retrieves data from repo
-        stationViewModel.init();
-
-        //  observe changes
-        stationViewModel.getStations().observe(this, new Observer<List<Station>>()
-        {
-            @Override
-            public void onChanged(List<Station> stations)
-            {
-                //  Notify adapter
-            }
-        });
-
     }
 
     // private void init, for adapter
@@ -106,6 +111,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
+
     }
 
     @Override
@@ -133,6 +139,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -148,14 +156,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        // Add a marker
         LatLng cph = new LatLng(55.6761, 12.5683);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.addMarker(new MarkerOptions().position(cph).title("Marker in Copenhagen"));
 
-
-        //Code to move google logo
+        //Code to move google logo to top right
         mMap.setPadding(20, 0, 0, 1800);
+
+
     }
 }

@@ -65,7 +65,7 @@ public class StationRepository
         });
     }
 
-    public MutableLiveData<List<Station>> getStations()
+    public MutableLiveData<List<Station>> repoGetStations()
     {
         getDataFromOplad();
         MutableLiveData<List<Station>> data = new MutableLiveData<>();

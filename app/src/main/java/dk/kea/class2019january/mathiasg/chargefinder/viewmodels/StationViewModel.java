@@ -1,5 +1,7 @@
 package dk.kea.class2019january.mathiasg.chargefinder.viewmodels;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -21,11 +23,12 @@ public class StationViewModel extends ViewModel
             return;
         }
         repo = StationRepository.getInstance();
-        stations = repo.getStations();
+        stations = repo.repoGetStations();
     }
 
     public LiveData<List<Station>> getStations()
     {
         return stations;
     }
+
 }
