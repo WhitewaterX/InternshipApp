@@ -18,10 +18,10 @@ public class StationViewModel extends ViewModel
     private MutableLiveData<List<Station>> stations = new MutableLiveData<>();
     private StationRepository repo;
 
-
     public void init()
     {
         repo = StationRepository.getInstance();
+
         repo.getDataFromOplad(new RepoCallback<List<Station>>()
         {
             @Override

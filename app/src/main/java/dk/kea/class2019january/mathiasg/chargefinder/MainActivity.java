@@ -42,7 +42,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private StationViewModel stationViewModel;
 
-    private List<Station> stationList = new ArrayList<>();
+    private ArrayList<Station> stationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
         setupViews();
 
+        stationList = new ArrayList<>();
 
 
         //  Set up viewmodel
@@ -67,7 +68,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 Log.d(TAG, "onChanged called");
 
-                System.out.println(stations);
+                stationList.addAll(stations);
+
+                placeMarkers(stationList);
 
             }
         });
@@ -76,7 +79,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void placeMarkers(List<Station> stationList)
     {
-        //take the list of data and add the elements as map markers
+        for(Station station : stationList)
+        {
+            LatLng pos = new LatLng(station.getLat(), station.getLng());
+            mMap.addMarker(new MarkerOptions().position(pos).title("Marker in " + station.getCityName()));
+        }
+
     }
 
     public void setupViews()
@@ -167,12 +175,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap = googleMap;
 
+        /*
         // Add a marker
         LatLng cph = new LatLng(55.6761, 12.5683);
         mMap.addMarker(new MarkerOptions().position(cph).title("Marker in Copenhagen"));
+         */
 
         //Code to move google logo to top right
-        mMap.setPadding(20, 0, 0, 1800);
+        //mMap.setPadding(20, 0, 0, 1800);
 
 
     }

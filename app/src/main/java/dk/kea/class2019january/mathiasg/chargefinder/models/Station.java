@@ -42,4 +42,49 @@ public class Station
                 ", connectors=" + connectors +
                 '}';
     }
+
+    public double getLat()
+    {
+        return lat;
+    }
+
+    public double getLng()
+    {
+        return lng;
+    }
+
+    public String getSiteId()
+    {
+        return siteId;
+    }
+
+    public String getSiteName()
+    {
+        return siteName;
+    }
+
+    public String getStreetAddress()
+    {
+        return streetAddress;
+    }
+
+    public int getZipCode()
+    {
+        return zipCode;
+    }
+
+    public String getCityName()
+    {
+        return cityName;
+    }
+
+    public String getStatus()
+    {
+        return status;
+    }
+
+    public ArrayList<Connector> getConnectors()
+    {
+        return connectors;
+    }
 }
