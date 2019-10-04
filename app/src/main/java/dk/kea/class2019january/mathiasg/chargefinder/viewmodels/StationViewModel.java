@@ -8,26 +8,40 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import dk.kea.class2019january.mathiasg.chargefinder.RepoCallback;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.repositories.StationRepository;
 
 public class StationViewModel extends ViewModel
 {
-    private MutableLiveData<List<Station>> stations;
+    private final String TAG = "StationViewModel";
+    private MutableLiveData<List<Station>> stations = new MutableLiveData<>();
     private StationRepository repo;
+
 
     public void init()
     {
-        if(stations != null)
-        {
-            return;
-        }
         repo = StationRepository.getInstance();
-        stations = repo.repoGetStations();
+        repo.getDataFromOplad(new RepoCallback<List<Station>>()
+        {
+            @Override
+            public void onSuccess(List<Station> result)
+            {
+                stations.setValue(result);
+            }
+
+            @Override
+            public void onFailure()
+            {
+
+            }
+        });
+
     }
 
     public LiveData<List<Station>> getStations()
     {
+        Log.d(TAG, "getStations");
         return stations;
     }
 

@@ -3,6 +3,7 @@ package dk.kea.class2019january.mathiasg.chargefinder;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -19,8 +20,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import dk.kea.class2019january.mathiasg.chargefinder.adapters.StationListAdapter;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
@@ -38,7 +41,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FrameLayout fragmentContainer;
 
     private StationViewModel stationViewModel;
-    private List<Station> stationsList;
+
+    private List<Station> stationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,6 +50,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupViews();
+
+
 
         //  Set up viewmodel
         stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
@@ -59,15 +65,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onChanged(List<Station> stations)
             {
+                Log.d(TAG, "onChanged called");
+
+                System.out.println(stations);
 
             }
         });
 
     }
 
-    public void placeMarkers()
+    public void placeMarkers(List<Station> stationList)
     {
-
+        //take the list of data and add the elements as map markers
     }
 
     public void setupViews()
@@ -111,6 +120,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
+
+        System.out.println(stationViewModel.getStations());
 
     }
 
