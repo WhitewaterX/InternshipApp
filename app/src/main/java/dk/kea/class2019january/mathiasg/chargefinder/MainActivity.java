@@ -3,7 +3,6 @@ package dk.kea.class2019january.mathiasg.chargefinder;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -14,16 +13,19 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.kea.class2019january.mathiasg.chargefinder.adapters.StationListAdapter;
+import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
@@ -53,7 +55,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         stationList = new ArrayList<>();
 
-
         //  Set up viewmodel
         stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
 
@@ -74,7 +75,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-
     }
 
     public void placeMarkers(List<Station> stationList)
@@ -82,9 +82,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         for(Station station : stationList)
         {
             LatLng pos = new LatLng(station.getLat(), station.getLng());
-            mMap.addMarker(new MarkerOptions().position(pos).title("Marker in " + station.getCityName()));
+            mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
         }
-
     }
 
     public void setupViews()
@@ -118,8 +117,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    // private void init, for adapter
-
     public void openAboutFragment()
     {
         AboutFragment aboutFragment = AboutFragment.newInstance();
@@ -128,9 +125,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
-
-        System.out.println(stationViewModel.getStations());
-
     }
 
     @Override
@@ -158,8 +152,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -175,11 +167,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap = googleMap;
 
-        /*
-        // Add a marker
+        //  Central Copenhagen coords
         LatLng cph = new LatLng(55.6761, 12.5683);
-        mMap.addMarker(new MarkerOptions().position(cph).title("Marker in Copenhagen"));
-         */
+
+        //  Make a camera position
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(cph)
+                .zoom(14)
+                .bearing(0)
+                .tilt(0)
+                .build();
+
+        //  Animate to camera position
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Code to move google logo to top right
         //mMap.setPadding(20, 0, 0, 1800);

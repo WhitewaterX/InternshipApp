@@ -19,4 +19,14 @@ public class Connector
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public String getStatus()
+    {
+        return status;
+    }
 }
