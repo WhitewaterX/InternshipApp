@@ -1,6 +1,7 @@
 package dk.kea.class2019january.mathiasg.chargefinder;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,13 +16,21 @@ import android.widget.Switch;
 public class FilterFragment extends Fragment
 {
 
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String TYPE2 = "type2";
+
     private filterOnFragmentInteractionListener mListener;
     private OnDataPass dataPasser;
+
     private ImageButton closeFilter;
+
     private Switch type2Switch;
     private Switch chademoSwitch;
     private Switch ccsSwitch;
     private Switch teslaSwitch;
+
+    private boolean type2State;
+
 
     public FilterFragment()
     {
@@ -31,7 +40,6 @@ public class FilterFragment extends Fragment
     public static FilterFragment newInstance()
     {
         FilterFragment fragment = new FilterFragment();
-
         return fragment;
     }
 
@@ -48,11 +56,7 @@ public class FilterFragment extends Fragment
         View view = inflater.inflate(R.layout.filter_layout, container, false);
 
         closeFilter = view.findViewById(R.id.closeFilter);
-
         type2Switch = view.findViewById(R.id.switch_type2);
-        chademoSwitch = view.findViewById(R.id.switch_chademo);
-        ccsSwitch = view.findViewById(R.id.switch_ccs);
-        teslaSwitch = view.findViewById(R.id.switch_tesla);
 
         type2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -61,11 +65,11 @@ public class FilterFragment extends Fragment
             {
                 if(isChecked)
                 {
-                    passData(true);
+
                 }
                 else
                 {
-                    passData(false);
+
                 }
             }
         });
@@ -79,9 +83,27 @@ public class FilterFragment extends Fragment
             }
         });
 
-
+        loadFilter();
+        updateViews();
 
         return view;
+    }
+
+    public void saveFilter()
+    {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean(TYPE2, type2Switch.isChecked());
+
+        editor.apply();
+    }
+
+    public void loadFilter()
+    {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
+        type2State = sharedPreferences.getBoolean(TYPE2, false);
     }
 
     public void sendBack()
@@ -95,6 +117,11 @@ public class FilterFragment extends Fragment
     public void passData(Boolean data)
     {
         dataPasser.onDataPass(data);
+    }
+
+    public void updateViews()
+    {
+        type2Switch.setChecked(type2State);
     }
 
     @Override
@@ -118,6 +145,7 @@ public class FilterFragment extends Fragment
     {
         super.onDetach();
         mListener = null;
+        dataPasser = null;
     }
 
     public interface filterOnFragmentInteractionListener

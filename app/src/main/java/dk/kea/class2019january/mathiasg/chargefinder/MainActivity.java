@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,8 @@ import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, FilterFragment.OnDataPass
 {
     private static final String TAG = "MainActivity";
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String TYPE2 = "type2";
 
     // Map
     private GoogleMap mMap;
@@ -43,7 +47,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private StationViewModel stationViewModel;
     private ArrayList<Station> stationList;
 
-    private boolean switchOn;
+    private boolean type2State;
 
     //TODO: get filter buttons to register
     //TODO: pin info on selection and open in maps app
@@ -58,8 +62,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupViews();
-
-        switchOn = false;
 
         stationList = new ArrayList<>();
 
@@ -83,6 +85,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
+        loadFilter();
     }
 
     public void placeMarkers(List<Station> stationList)
@@ -92,6 +96,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng pos = new LatLng(station.getLat(), station.getLng());
             mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
         }
+    }
+
+    public void loadFilter()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
+        type2State = sharedPreferences.getBoolean(TYPE2, false);
     }
 
     public void setupViews()
@@ -134,7 +145,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
 
-        System.out.println(switchOn);
+        System.out.println(type2State);
     }
 
     @Override
@@ -162,7 +173,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onDataPass(Boolean data)
     {
-        switchOn = data;
+
     }
 
     /**
