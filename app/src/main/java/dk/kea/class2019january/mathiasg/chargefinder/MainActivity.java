@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,11 +24,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, FilterFragment.OnDataPass
 {
     private static final String TAG = "MainActivity";
 
@@ -43,8 +41,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FrameLayout fragmentContainer;
 
     private StationViewModel stationViewModel;
-
     private ArrayList<Station> stationList;
+
+    private boolean switchOn;
+
+    //TODO: get filter buttons to register
+    //TODO: pin info on selection and open in maps app
+    //TODO: custom map pins
+    //TODO: add different API
+    //TODO: possibly add Room, or Firebase
+    //TODO: hide toolbar
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,6 +58,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupViews();
+
+        switchOn = false;
 
         stationList = new ArrayList<>();
 
@@ -125,6 +133,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
+
+        System.out.println(switchOn);
     }
 
     @Override
@@ -149,8 +159,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         onBackPressed();
     }
 
-
-
+    @Override
+    public void onDataPass(Boolean data)
+    {
+        switchOn = data;
+    }
 
     /**
      * Manipulates the map once available.

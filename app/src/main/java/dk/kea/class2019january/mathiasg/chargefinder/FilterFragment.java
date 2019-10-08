@@ -8,13 +8,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 public class FilterFragment extends Fragment
 {
 
     private filterOnFragmentInteractionListener mListener;
+    private OnDataPass dataPasser;
     private ImageButton closeFilter;
+    private Switch type2Switch;
+    private Switch chademoSwitch;
+    private Switch ccsSwitch;
+    private Switch teslaSwitch;
 
     public FilterFragment()
     {
@@ -42,6 +49,27 @@ public class FilterFragment extends Fragment
 
         closeFilter = view.findViewById(R.id.closeFilter);
 
+        type2Switch = view.findViewById(R.id.switch_type2);
+        chademoSwitch = view.findViewById(R.id.switch_chademo);
+        ccsSwitch = view.findViewById(R.id.switch_ccs);
+        teslaSwitch = view.findViewById(R.id.switch_tesla);
+
+        type2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    passData(true);
+                }
+                else
+                {
+                    passData(false);
+                }
+            }
+        });
+
         closeFilter.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -50,6 +78,8 @@ public class FilterFragment extends Fragment
                 sendBack();
             }
         });
+
+
 
         return view;
     }
@@ -60,6 +90,11 @@ public class FilterFragment extends Fragment
         {
             mListener.filterOnFragmentInteraction();
         }
+    }
+
+    public void passData(Boolean data)
+    {
+        dataPasser.onDataPass(data);
     }
 
     @Override
@@ -74,6 +109,8 @@ public class FilterFragment extends Fragment
             throw new RuntimeException(context.toString()
                     + " must implement aboutOnFragmentInteractionListener");
         }
+
+        dataPasser =(OnDataPass) context;
     }
 
     @Override
@@ -86,5 +123,10 @@ public class FilterFragment extends Fragment
     public interface filterOnFragmentInteractionListener
     {
         void filterOnFragmentInteraction();
+    }
+
+    public interface OnDataPass
+    {
+        void onDataPass(Boolean data);
     }
 }
