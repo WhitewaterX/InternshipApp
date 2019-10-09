@@ -21,7 +21,6 @@ public class FilterFragment extends Fragment
     private static final String TYPE2 = "type2";
 
     private filterOnFragmentInteractionListener mListener;
-    private OnDataPass dataPasser;
 
     private ImageButton closeFilter;
 
@@ -113,11 +112,6 @@ public class FilterFragment extends Fragment
         }
     }
 
-    public void passData(Boolean data)
-    {
-        dataPasser.onDataPass(data);
-    }
-
     public void updateViews()
     {
         type2Switch.setChecked(type2State);
@@ -136,7 +130,6 @@ public class FilterFragment extends Fragment
                     + " must implement aboutOnFragmentInteractionListener");
         }
 
-        dataPasser = (OnDataPass) context;
     }
 
     @Override
@@ -144,16 +137,10 @@ public class FilterFragment extends Fragment
     {
         super.onDetach();
         mListener = null;
-        dataPasser = null;
     }
 
     public interface filterOnFragmentInteractionListener
     {
         void filterOnFragmentInteraction();
-    }
-
-    public interface OnDataPass
-    {
-        void onDataPass(Boolean data);
     }
 }

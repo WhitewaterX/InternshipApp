@@ -1,3 +1,10 @@
+//TODO: toggle markers
+//TODO: pin info fragment on selection and open in maps app
+//TODO: custom map pins
+//TODO: add different API
+//TODO: possibly add Room, or Firebase
+//TODO: hide toolbar
+
 package dk.kea.class2019january.mathiasg.chargefinder;
 
 import androidx.fragment.app.FragmentActivity;
@@ -30,7 +37,7 @@ import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, FilterFragment.OnDataPass
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
 {
     private static final String TAG = "MainActivity";
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -49,12 +56,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Station> stationList;
 
     private boolean type2State;
-
-    //TODO: pin info on selection and open in maps app
-    //TODO: custom map pins
-    //TODO: add different API
-    //TODO: possibly add Room, or Firebase
-    //TODO: hide toolbar
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -89,25 +90,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         loadFilter();
     }
 
+    //  places markers on map
     public void placeMarkers(List<Station> stationList)
     {
         for(Station station : stationList)
         {
-            Boolean place = false;
+            //  Boolean used to secure that only 1 marker is placed per station.
+            boolean connectorsAvailable = false;
 
-            if (station.getCityName().equals("København"))
+            //  check station based on area (currently static cph, can later get gps location)
+            if (station.getCityName().contains("København"))
             {
-                System.out.println("Station: " + station.getSiteId());
-
+                //  check if there are any available connectors and flags the boolean to true if
                 for(Connector connector : station.getConnectors())
                 {
                     if (connector.getStatus().equals("Available"))
                     {
-                        place = true;
+                        connectorsAvailable = true;
                     }
                 }
-
-                if(place)
+                //  places marker if a connector is available
+                if(connectorsAvailable)
                 {
                     LatLng pos = new LatLng(station.getLat(), station.getLng());
                     mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
@@ -189,12 +192,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //  reloads the filter settings from sharedpreferences, set in filterfragment, when returning to mainactivity.
         loadFilter();
         Log.d(TAG, "onbackpressed");
-    }
-
-    @Override
-    public void onDataPass(Boolean data)
-    {
-
     }
 
     /**
