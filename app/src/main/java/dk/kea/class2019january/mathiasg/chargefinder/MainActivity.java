@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
@@ -49,7 +50,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean type2State;
 
-    //TODO: get filter buttons to register
     //TODO: pin info on selection and open in maps app
     //TODO: custom map pins
     //TODO: add different API
@@ -93,15 +93,33 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     {
         for(Station station : stationList)
         {
-            LatLng pos = new LatLng(station.getLat(), station.getLng());
-            mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
+            Boolean place = false;
+
+            if (station.getCityName().equals("København"))
+            {
+                System.out.println("Station: " + station.getSiteId());
+
+                for(Connector connector : station.getConnectors())
+                {
+                    if (connector.getStatus().equals("Available"))
+                    {
+                        place = true;
+                    }
+                }
+
+                if(place)
+                {
+                    LatLng pos = new LatLng(station.getLat(), station.getLng());
+                    mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
+                }
+            }
         }
     }
 
+    //  gets filter settings from sharedpreferences
     public void loadFilter()
     {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-
         type2State = sharedPreferences.getBoolean(TYPE2, false);
     }
 
@@ -168,6 +186,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void filterOnFragmentInteraction()
     {
         onBackPressed();
+        //  reloads the filter settings from sharedpreferences, set in filterfragment, when returning to mainactivity.
+        loadFilter();
+        Log.d(TAG, "onbackpressed");
     }
 
     @Override
@@ -208,6 +229,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //Code to move google logo to top right
         //mMap.setPadding(20, 0, 0, 1800);
 
-
     }
+
 }

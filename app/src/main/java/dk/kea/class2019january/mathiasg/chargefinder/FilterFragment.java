@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,9 @@ import android.widget.Switch;
 
 public class FilterFragment extends Fragment
 {
-
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String TYPE2 = "type2";
+    private static final String TAG = "FilterFragment";
+    private static final String SHARED_PREFS = "sharedPrefs";
+    private static final String TYPE2 = "type2";
 
     private filterOnFragmentInteractionListener mListener;
     private OnDataPass dataPasser;
@@ -65,11 +66,11 @@ public class FilterFragment extends Fragment
             {
                 if(isChecked)
                 {
-
+                    saveFilter(true);
                 }
                 else
                 {
-
+                    saveFilter(false);
                 }
             }
         });
@@ -89,20 +90,18 @@ public class FilterFragment extends Fragment
         return view;
     }
 
-    public void saveFilter()
+    public void saveFilter(Boolean state)
     {
+        Log.d(TAG, "saveFilter: called. Status is " + state);
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putBoolean(TYPE2, type2Switch.isChecked());
-
+        editor.putBoolean(TYPE2, state);
         editor.apply();
     }
 
     public void loadFilter()
     {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-
         type2State = sharedPreferences.getBoolean(TYPE2, false);
     }
 
@@ -137,7 +136,7 @@ public class FilterFragment extends Fragment
                     + " must implement aboutOnFragmentInteractionListener");
         }
 
-        dataPasser =(OnDataPass) context;
+        dataPasser = (OnDataPass) context;
     }
 
     @Override
