@@ -28,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupViews();
+        loadFilter();
 
         stationList = new ArrayList<>();
 
@@ -81,13 +83,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "onChanged called");
 
                 stationList.addAll(stations);
-
-                placeMarkers(stationList);
-
             }
         });
-
-        loadFilter();
     }
 
     //  places markers on map
@@ -165,8 +162,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
-
-        System.out.println(type2State);
     }
 
     @Override
@@ -188,10 +183,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void filterOnFragmentInteraction()
     {
+        Log.d(TAG, "onbackpressed");
         onBackPressed();
+
         //  reloads the filter settings from sharedpreferences, set in filterfragment, when returning to mainactivity.
         loadFilter();
-        Log.d(TAG, "onbackpressed");
+        if(type2State)
+        {
+            placeMarkers(stationList);
+        }
+        if(!type2State)
+        {
+            mMap.clear();
+        }
     }
 
     /**
