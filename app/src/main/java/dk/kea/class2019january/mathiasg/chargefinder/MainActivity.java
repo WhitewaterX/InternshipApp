@@ -172,7 +172,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
-        transaction.add(R.id.fragment_container, aboutFragment, "BLANK_FRAGMENT").commit();
+        transaction.add(R.id.fragment_container, aboutFragment, "ABOUT_FRAGMENT").commit();
     }
 
     @Override
@@ -188,7 +188,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
         transaction.addToBackStack(null);
-        transaction.add(R.id.fragment_container, filterFragment, "BLANK_FRAGMENT").commit();
+        transaction.add(R.id.fragment_container, filterFragment, "FILTER_FRAGMENT").commit();
     }
 
     @Override
@@ -214,6 +214,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void openStationFragment(Station station)
     {
         StationFragment stationFragment = StationFragment.newInstance(station);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
+        transaction.addToBackStack(null);
+        transaction.add(R.id.fragment_container, stationFragment, "STATION_FRAGMENT").commit();
     }
 
     @Override
@@ -244,8 +249,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onMarkerClick(Marker marker)
             {
                 Station station = markers.get(marker);
-                //openStationFragment(station);
-                openAboutFragment();
+                openStationFragment(station);
                 return false;
             }
         });
