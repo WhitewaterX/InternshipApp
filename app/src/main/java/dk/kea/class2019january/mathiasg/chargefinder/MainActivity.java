@@ -121,6 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     LatLng pos = new LatLng(station.getLat(), station.getLng());
                     Marker marker = mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
 
+                    // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
                     markers.put(marker, station);
                 }
             }
@@ -248,6 +249,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker)
             {
+                //  gets station
                 Station station = markers.get(marker);
                 openStationFragment(station);
                 return false;
