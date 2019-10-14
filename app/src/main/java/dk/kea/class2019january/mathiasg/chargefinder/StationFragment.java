@@ -1,6 +1,7 @@
 package dk.kea.class2019january.mathiasg.chargefinder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +24,8 @@ public class StationFragment extends Fragment
     private stationOnFragmentInteractionListener mListener;
     private ImageView closeStation;
     private TextView stationName;
+    private Button navButton;
+
 
     public StationFragment()
     {
@@ -49,6 +53,7 @@ public class StationFragment extends Fragment
         closeStation = view.findViewById(R.id.closeStation);
         stationName = view.findViewById(R.id.stationName);
         stationName.setText(mStation.getStreetAddress());
+        navButton = view.findViewById(R.id.navButton);
 
         closeStation.setOnClickListener(new View.OnClickListener()
         {
@@ -56,6 +61,22 @@ public class StationFragment extends Fragment
             public void onClick(View v)
             {
                 sendBack();
+            }
+        });
+
+        navButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                double latitude = mStation.getLat();
+                double longitude = mStation.getLng();
+
+                //  Opens google maps navigation with the marker's coordinates
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude + "&mode=d");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 

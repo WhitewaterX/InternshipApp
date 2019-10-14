@@ -33,4 +33,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/stationName" />
 
+    <Button
+        android:id="@+id/navButton"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:text="Naviagte to this location"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="@color/colorPurple"
+        android:stateListAnimator="@null"
+        android:background="@drawable/navigate_button"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:drawableStart="@drawable/icon_nav"
+        android:paddingLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
