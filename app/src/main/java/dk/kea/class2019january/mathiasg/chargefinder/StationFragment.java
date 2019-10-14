@@ -1,6 +1,7 @@
 package dk.kea.class2019january.mathiasg.chargefinder;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,24 +9,28 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class AboutFragment extends Fragment
+import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+
+
+public class StationFragment extends Fragment
 {
 
-    private aboutOnFragmentInteractionListener mListener;
-    private ImageButton closeAbout;
+    private Station mStation;
+    private stationOnFragmentInteractionListener mListener;
+    private ImageView closeStation;
 
-    public AboutFragment()
+    public StationFragment()
     {
         // Required empty public constructor
     }
 
-
-    public static AboutFragment newInstance()
+    public static StationFragment newInstance(Station station)
     {
-        AboutFragment fragment = new AboutFragment();
-
+        StationFragment fragment = new StationFragment();
+        fragment.mStation = station;
         return fragment;
     }
 
@@ -33,17 +38,16 @@ public class AboutFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.about_layout, container, false);
-        closeAbout = view.findViewById(R.id.closeAbout);
+        View view = inflater.inflate(R.layout.station_layout, container, false);
+        closeStation = view.findViewById(R.id.closeStation);
 
-        closeAbout.setOnClickListener(new View.OnClickListener()
+        closeStation.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -60,7 +64,7 @@ public class AboutFragment extends Fragment
     {
         if (mListener != null)
         {
-            mListener.aboutOnFragmentInteraction();
+            mListener.stationOnFragmentInteraction();
         }
     }
 
@@ -68,13 +72,13 @@ public class AboutFragment extends Fragment
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof aboutOnFragmentInteractionListener)
+        if (context instanceof stationOnFragmentInteractionListener)
         {
-            mListener = (aboutOnFragmentInteractionListener) context;
+            mListener = (stationOnFragmentInteractionListener) context;
         } else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement aboutOnFragmentInteractionListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -86,8 +90,8 @@ public class AboutFragment extends Fragment
     }
 
 
-    public interface aboutOnFragmentInteractionListener
+    public interface stationOnFragmentInteractionListener
     {
-        void aboutOnFragmentInteraction();
+        void stationOnFragmentInteraction();
     }
 }

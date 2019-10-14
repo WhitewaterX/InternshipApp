@@ -1,4 +1,3 @@
-//TODO: toggle markers
 //TODO: pin info fragment on selection and open in maps app
 //TODO: custom map pins
 //TODO: add different API
@@ -32,13 +31,15 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, StationFragment.stationOnFragmentInteractionListener
 {
     private static final String TAG = "MainActivity";
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -53,8 +54,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button filterButton;
     private FrameLayout fragmentContainer;
 
+    //  data from station api
     private StationViewModel stationViewModel;
     private ArrayList<Station> stationList;
+
+    //  marker data storage, also used for when opening station fragment
+    private Map<Marker, Station> markers = new HashMap<>();
+
+    //private MarkerDrawer markerDrawer;
 
     private boolean type2State;
 
@@ -65,6 +72,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
         setupViews();
         loadFilter();
+
+       //markerDrawer = new MarkerDrawer();
 
         stationList = new ArrayList<>();
 
@@ -110,7 +119,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 if(connectorsAvailable)
                 {
                     LatLng pos = new LatLng(station.getLat(), station.getLng());
-                    mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
+
+                    markers.put(marker, station);
                 }
             }
         }
@@ -183,19 +194,32 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void filterOnFragmentInteraction()
     {
-        Log.d(TAG, "onbackpressed");
+        Log.d(TAG, "onBackPressed called");
         onBackPressed();
 
-        //  reloads the filter settings from sharedpreferences, set in filterfragment, when returning to mainactivity.
         loadFilter();
+
+        //markerDrawer.drawMarker(type2State);
+
         if(type2State)
         {
             placeMarkers(stationList);
         }
-        if(!type2State)
+        else
         {
             mMap.clear();
         }
+    }
+
+    public void openStationFragment(Station station)
+    {
+        StationFragment stationFragment = StationFragment.newInstance(station);
+    }
+
+    @Override
+    public void stationOnFragmentInteraction()
+    {
+        onBackPressed();
     }
 
     /**
@@ -212,6 +236,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap)
     {
         mMap = googleMap;
+
+        //  listener for custom click event
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker marker)
+            {
+                Station station = markers.get(marker);
+                //openStationFragment(station);
+                openAboutFragment();
+                return false;
+            }
+        });
 
         //  Central Copenhagen coords
         LatLng cph = new LatLng(55.6761, 12.5683);
@@ -231,5 +268,4 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.setPadding(20, 0, 0, 1800);
 
     }
-
 }

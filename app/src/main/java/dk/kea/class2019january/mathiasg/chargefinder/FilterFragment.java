@@ -129,7 +129,6 @@ public class FilterFragment extends Fragment
             throw new RuntimeException(context.toString()
                     + " must implement aboutOnFragmentInteractionListener");
         }
-
     }
 
     @Override
