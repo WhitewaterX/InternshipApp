@@ -48,7 +48,7 @@ public class StationFragment extends Fragment
         View view = inflater.inflate(R.layout.station_layout, container, false);
         closeStation = view.findViewById(R.id.closeStation);
         stationName = view.findViewById(R.id.stationName);
-        stationName.setText(mStation.getSiteName());
+        stationName.setText(mStation.getStreetAddress());
 
         closeStation.setOnClickListener(new View.OnClickListener()
         {
