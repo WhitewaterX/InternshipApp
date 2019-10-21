@@ -69,10 +69,9 @@ public class StationFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+                //  Opens google maps navigation with the marker's coordinates
                 double latitude = mStation.getLat();
                 double longitude = mStation.getLng();
-
-                //  Opens google maps navigation with the marker's coordinates
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude + "&mode=d");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");

@@ -1,5 +1,5 @@
-//TODO: pin info fragment on selection and open in maps app
 //TODO: custom map pins
+//TODO: rest of station fragment layout
 //TODO: add different API
 //TODO: possibly add Room, or Firebase
 //TODO: hide toolbar
@@ -14,6 +14,10 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -61,8 +66,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     //  marker data storage, also used for when opening station fragment
     private Map<Marker, Station> markers = new HashMap<>();
 
-    //private MarkerDrawer markerDrawer;
-
     private boolean type2State;
 
     @Override
@@ -72,8 +75,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
         setupViews();
         loadFilter();
-
-       //markerDrawer = new MarkerDrawer();
 
         stationList = new ArrayList<>();
 
@@ -99,32 +100,46 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     //  places markers on map
     public void placeMarkers(List<Station> stationList)
     {
-        for(Station station : stationList)
+        if(type2State)
         {
-            //  Boolean used to secure that only 1 marker is placed per station.
-            boolean connectorsAvailable = false;
-
-            //  check station based on area (currently static cph, can later get gps location)
-            if (station.getCityName().contains("København"))
+            for(Station station : stationList)
             {
-                //  check if there are any available connectors and flags the boolean to true if
-                for(Connector connector : station.getConnectors())
+                //  Boolean used to secure that only 1 marker is placed per station.
+                boolean connectorsAvailable = false;
+
+                //  check station based on area (currently static cph, can later get gps location)
+                if (station.getCityName().contains("København"))
                 {
-                    if (connector.getStatus().equals("Available"))
+                    //  check if there are any available connectors and flags the boolean to true if
+                    for(Connector connector : station.getConnectors())
                     {
-                        connectorsAvailable = true;
+                        if (connector.getStatus().equals("Available"))
+                        {
+                            connectorsAvailable = true;
+                        }
+                    }
+                    //  places marker if a connector is available
+                    if(connectorsAvailable)
+                    {
+                        LatLng pos = new LatLng(station.getLat(), station.getLng());
+                        Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
+                        Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
+                        Bitmap merged = mergeToPin(pin, green);
+
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                        .position(pos)
+                                        .icon(BitmapDescriptorFactory.fromBitmap(merged)));
+
+                        // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
+                        markers.put(marker, station);
                     }
                 }
-                //  places marker if a connector is available
-                if(connectorsAvailable)
-                {
-                    LatLng pos = new LatLng(station.getLat(), station.getLng());
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(pos).title(station.getStreetAddress() + ", " + station.getCityName()));
-
-                    // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
-                    markers.put(marker, station);
-                }
             }
+        }
+
+        else
+        {
+            mMap.clear();
         }
     }
 
@@ -200,16 +215,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         loadFilter();
 
-        //markerDrawer.drawMarker(type2State);
+        placeMarkers(stationList);
 
-        if(type2State)
-        {
-            placeMarkers(stationList);
-        }
-        else
-        {
-            mMap.clear();
-        }
     }
 
     public void openStationFragment(Station station)
@@ -273,5 +280,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //Code to move google logo to top right
         //mMap.setPadding(20, 0, 0, 1800);
 
+    }
+
+    private Bitmap mergeToPin(Bitmap firstImage, Bitmap secondImage){
+
+        Bitmap result = Bitmap.createBitmap(firstImage.getWidth(), firstImage.getHeight(), firstImage.getConfig());
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(firstImage, 0f, 0f, null);
+        canvas.drawBitmap(secondImage, 90, 30, null);
+        return result;
     }
 }
