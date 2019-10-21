@@ -1,8 +1,6 @@
-//TODO: custom map pins
-//TODO: rest of station fragment layout
 //TODO: add different API
-//TODO: possibly add Room, or Firebase
-//TODO: hide toolbar
+//TODO: rest of station fragment layout
+//TODO: possibly add Firebase
 
 package dk.kea.class2019january.mathiasg.chargefinder;
 
@@ -287,7 +285,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Bitmap result = Bitmap.createBitmap(firstImage.getWidth(), firstImage.getHeight(), firstImage.getConfig());
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(firstImage, 0f, 0f, null);
-        canvas.drawBitmap(secondImage, 90, 30, null);
+        canvas.drawBitmap(secondImage, 55, 30, null);
         return result;
     }
 }
