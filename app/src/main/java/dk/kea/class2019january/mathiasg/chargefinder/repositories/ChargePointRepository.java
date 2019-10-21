@@ -10,7 +10,6 @@ import java.util.List;
 import dk.kea.class2019january.mathiasg.chargefinder.OpenApi;
 import dk.kea.class2019january.mathiasg.chargefinder.RepoCallback;
 import dk.kea.class2019january.mathiasg.chargefinder.models.ChargePoint;
-import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,13 +22,13 @@ public class ChargePointRepository
     Singleton pattern, only one instance of the repo, to avoid many different open connections.
      */
     private final String TAG = "ChargePointRepository";
-    static StationRepository instance;
+    static ChargePointRepository instance;
 
-    public static StationRepository getInstance()
+    public static ChargePointRepository getInstance()
     {
         if(instance == null)
         {
-            instance = new StationRepository();
+            instance = new ChargePointRepository();
         }
         return instance;
     }
