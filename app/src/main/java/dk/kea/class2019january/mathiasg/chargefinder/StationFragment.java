@@ -14,13 +14,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+import dk.kea.class2019january.mathiasg.chargefinder.models.ChargePoint;
 
 
 public class StationFragment extends Fragment
 {
 
-    private Station mStation;
+    private ChargePoint mChargePoint;
     private stationOnFragmentInteractionListener mListener;
     private ImageView closeStation;
     private TextView stationName;
@@ -32,10 +32,10 @@ public class StationFragment extends Fragment
         // Required empty public constructor
     }
 
-    public static StationFragment newInstance(Station station)
+    public static StationFragment newInstance(ChargePoint chargePoint)
     {
         StationFragment fragment = new StationFragment();
-        fragment.mStation = station;
+        fragment.mChargePoint = chargePoint;
         return fragment;
     }
 
@@ -52,7 +52,7 @@ public class StationFragment extends Fragment
         View view = inflater.inflate(R.layout.station_layout, container, false);
         closeStation = view.findViewById(R.id.closeStation);
         stationName = view.findViewById(R.id.stationName);
-        stationName.setText(mStation.getStreetAddress());
+        stationName.setText(mChargePoint.getAddressInfo().getAddress());
         navButton = view.findViewById(R.id.navButton);
 
         closeStation.setOnClickListener(new View.OnClickListener()
@@ -70,8 +70,8 @@ public class StationFragment extends Fragment
             public void onClick(View v)
             {
                 //  Opens google maps navigation with the marker's coordinates
-                double latitude = mStation.getLat();
-                double longitude = mStation.getLng();
+                double latitude = mChargePoint.getAddressInfo().getLatitude();
+                double longitude = mChargePoint.getAddressInfo().getLongitude();
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude + "&mode=d");
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");

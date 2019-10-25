@@ -18,7 +18,10 @@ public class FilterFragment extends Fragment
 {
     private static final String TAG = "FilterFragment";
     private static final String SHARED_PREFS = "sharedPrefs";
-    private static final String TYPE2 = "type2";
+    public static final String TYPE2 = "type2";
+    public static final String CHADEMO = "chademo";
+    public static final String TESLA = "tesla";
+    public static final String CCS = "ccs";
 
     private filterOnFragmentInteractionListener mListener;
 
@@ -30,6 +33,9 @@ public class FilterFragment extends Fragment
     private Switch teslaSwitch;
 
     private boolean type2State;
+    private boolean chademoState;
+    private boolean teslaState;
+    private boolean ccsState;
 
 
     public FilterFragment()
@@ -57,6 +63,9 @@ public class FilterFragment extends Fragment
 
         closeFilter = view.findViewById(R.id.closeFilter);
         type2Switch = view.findViewById(R.id.switch_type2);
+        chademoSwitch = view.findViewById(R.id.switch_chademo);
+        teslaSwitch = view.findViewById(R.id.switch_tesla);
+        ccsSwitch = view.findViewById(R.id.switch_ccs);
 
         type2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -65,11 +74,59 @@ public class FilterFragment extends Fragment
             {
                 if(isChecked)
                 {
-                    saveFilter(true);
+                    saveFilter(true, TYPE2);
                 }
                 else
                 {
-                    saveFilter(false);
+                    saveFilter(false, TYPE2);
+                }
+            }
+        });
+
+        chademoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    saveFilter(true, CHADEMO);
+                }
+                else
+                {
+                    saveFilter(false, CHADEMO);
+                }
+            }
+        });
+
+        teslaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    saveFilter(true, TESLA);
+                }
+                else
+                {
+                    saveFilter(false, TESLA);
+                }
+            }
+        });
+
+        ccsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    saveFilter(true, CCS);
+                }
+                else
+                {
+                    saveFilter(false, CCS);
                 }
             }
         });
@@ -89,12 +146,12 @@ public class FilterFragment extends Fragment
         return view;
     }
 
-    public void saveFilter(Boolean state)
+    public void saveFilter(Boolean state, String tag)
     {
         Log.d(TAG, "saveFilter: called. Status is " + state);
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(TYPE2, state);
+        editor.putBoolean(tag, state);
         editor.apply();
     }
 
@@ -102,6 +159,9 @@ public class FilterFragment extends Fragment
     {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         type2State = sharedPreferences.getBoolean(TYPE2, false);
+        chademoState = sharedPreferences.getBoolean(CHADEMO, false);
+        teslaState = sharedPreferences.getBoolean(TESLA, false);
+        ccsState = sharedPreferences.getBoolean(CCS, false);
     }
 
     public void sendBack()
@@ -115,6 +175,9 @@ public class FilterFragment extends Fragment
     public void updateViews()
     {
         type2Switch.setChecked(type2State);
+        chademoSwitch.setChecked(chademoState);
+        teslaSwitch.setChecked(teslaState);
+        ccsSwitch.setChecked(ccsState);
     }
 
     @Override

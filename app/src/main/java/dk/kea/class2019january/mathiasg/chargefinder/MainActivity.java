@@ -39,16 +39,18 @@ import java.util.List;
 import java.util.Map;
 
 import dk.kea.class2019january.mathiasg.chargefinder.models.ChargePoint;
-import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
-import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+import dk.kea.class2019january.mathiasg.chargefinder.models.Connections;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.ChargePointViewModel;
-import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, StationFragment.stationOnFragmentInteractionListener
 {
     private static final String TAG = "MainActivity";
+
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String TYPE2 = "type2";
+    public static final String CHADEMO = "chademo";
+    public static final String TESLA = "tesla";
+    public static final String CCS = "ccs";
 
     // Map
     private GoogleMap mMap;
@@ -59,18 +61,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Button filterButton;
     private FrameLayout fragmentContainer;
 
-    //  data from station api
-    private StationViewModel stationViewModel;
-    private ArrayList<Station> stationList;
-
+    //  data from api
+    //private StationViewModel stationViewModel;
+    //private ArrayList<Station> stationList;
     private ChargePointViewModel chargePointViewModel;
     private ArrayList<ChargePoint> chargePointList;
 
     //  marker data storage, also used for when opening station fragment
-    private Map<Marker, Station> markers = new HashMap<>();
-    private Map<Marker, ChargePoint> markersCharge = new HashMap<>();
+    //private Map<Marker, Station> markers = new HashMap<>();
+    private Map<Marker, ChargePoint> markers = new HashMap<>();
 
     private boolean type2State;
+    private boolean chademoState;
+    private boolean teslaState;
+    private boolean ccsState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -127,6 +131,58 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     //  places markers on map
+    public void placeMarkers(List<ChargePoint> chargePointList)
+    {
+        for(ChargePoint chargePoint : chargePointList)
+        {
+            LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
+
+            boolean type2 = false;
+            boolean chademo = false;
+            boolean tesla = false;
+            boolean ccs = false;
+
+            for (Connections connections : chargePoint.getConnections())
+            {
+                if(connections.getConnectionType().getTitle().contains("Type 2") && type2State)
+                {
+                    type2 = true;
+                }
+
+                if(connections.getConnectionType().getTitle().contains("CHAdeMO" ))
+                {
+                    chademo = true;
+                }
+
+                if(connections.getConnectionType().getTitle().contains("Tesla Supercharger"))
+                {
+                    tesla = true;
+                }
+
+                if(connections.getConnectionType().getTitle().contains("CCS"))
+                {
+                    ccs = true;
+                }
+            }
+
+
+            Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
+            Bitmap red = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.red_dot);
+            Bitmap blue = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.blue_dot);
+            Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
+            Bitmap yellow = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.yellow_dot);
+
+            Bitmap merged = mergeToPin(pin, green, blue, red, yellow);
+
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(pos)
+                    .icon(BitmapDescriptorFactory.fromBitmap(merged)));
+
+            // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
+            markers.put(marker, chargePoint);
+        }
+    }
+    /*
     public void placeMarkers(List<Station> stationList)
     {
         if(type2State)
@@ -156,8 +212,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         Bitmap merged = mergeToPin(pin, green);
 
                         Marker marker = mMap.addMarker(new MarkerOptions()
-                                        .position(pos)
-                                        .icon(BitmapDescriptorFactory.fromBitmap(merged)));
+                                .position(pos)
+                                .icon(BitmapDescriptorFactory.fromBitmap(merged)));
 
                         // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
                         markers.put(marker, station);
@@ -172,11 +228,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+     */
+
     //  gets filter settings from sharedpreferences
     public void loadFilter()
     {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         type2State = sharedPreferences.getBoolean(TYPE2, false);
+        chademoState = sharedPreferences.getBoolean(CHADEMO, false);
+        teslaState = sharedPreferences.getBoolean(TESLA, false);
+        ccsState = sharedPreferences.getBoolean(CCS, false);
     }
 
     public void setupViews()
@@ -225,8 +286,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void aboutOnFragmentInteraction()
     {
         onBackPressed();
-
-        System.out.println(chargePointList);
     }
 
     public void openFilterFragment()
@@ -247,13 +306,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         loadFilter();
 
-        //placeMarkers(stationList);
+        placeMarkers(chargePointList);
 
     }
 
-    public void openStationFragment(Station station)
+    public void openStationFragment(ChargePoint chargePoint)
     {
-        StationFragment stationFragment = StationFragment.newInstance(station);
+        StationFragment stationFragment = StationFragment.newInstance(chargePoint);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_bottom, R.anim.exit_to_bottom, R.anim.enter_from_bottom, R.anim.exit_to_bottom);
@@ -290,8 +349,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
 
                 //  gets station
-                Station station = markers.get(marker);
-                openStationFragment(station);
+                ChargePoint chargePoint = markers.get(marker);
+                openStationFragment(chargePoint);
                 return false;
             }
         });
@@ -315,12 +374,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private Bitmap mergeToPin(Bitmap firstImage, Bitmap secondImage){
+    private Bitmap mergeToPin(Bitmap pin, Bitmap green, Bitmap blue, Bitmap red, Bitmap yellow){
 
-        Bitmap result = Bitmap.createBitmap(firstImage.getWidth(), firstImage.getHeight(), firstImage.getConfig());
+        Bitmap result = Bitmap.createBitmap(pin.getWidth(), pin.getHeight(), pin.getConfig());
         Canvas canvas = new Canvas(result);
-        canvas.drawBitmap(firstImage, 0f, 0f, null);
-        canvas.drawBitmap(secondImage, 55, 30, null);
+        canvas.drawBitmap(pin, 0f, 0f, null);
+
+        if(type2State)
+        {
+            canvas.drawBitmap(green, 55, 30, null);
+            canvas.drawBitmap(blue, 85, 60, null);
+            canvas.drawBitmap(red, 55, 90, null);
+            canvas.drawBitmap(yellow, 25, 60, null);
+        }
+
         return result;
     }
 }

@@ -2,6 +2,7 @@ package dk.kea.class2019january.mathiasg.chargefinder.repositories;
 
 import android.util.Log;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
