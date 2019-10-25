@@ -1,8 +1,10 @@
 package dk.kea.class2019january.mathiasg.chargefinder.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OperatorInfo
 {
-
+    @SerializedName("Title")
     private String title;
 
     public OperatorInfo(String title)

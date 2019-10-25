@@ -1,17 +1,31 @@
 package dk.kea.class2019january.mathiasg.chargefinder.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class AddressInfo
 {
-
+    @SerializedName("Title")
     private String title;
-    private String address;
-    private String town;
-    private String stateOrProvince;
-    private String postcode;
-    private int latitude;
-    private int longitude;
 
-    public AddressInfo(String title, String address, String town, String stateOrProvince, String postcode, int latitude, int longitude)
+    @SerializedName("AddressLine1")
+    private String address;
+
+    @SerializedName("Town")
+    private String town;
+
+    @SerializedName("StateOrProvince")
+    private String stateOrProvince;
+
+    @SerializedName("Postcode")
+    private String postcode;
+
+    @SerializedName("Latitude")
+    private double latitude;
+
+    @SerializedName("Longitude")
+    private double longitude;
+
+    public AddressInfo(String title, String address, String town, String stateOrProvince, String postcode, double latitude, double longitude)
     {
         this.title = title;
         this.address = address;
@@ -61,12 +75,12 @@ public class AddressInfo
         return postcode;
     }
 
-    public int getLatitude()
+    public double getLatitude()
     {
         return latitude;
     }
 
-    public int getLongitude()
+    public double getLongitude()
     {
         return longitude;
     }
