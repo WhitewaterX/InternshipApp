@@ -1,6 +1,5 @@
-//TODO: add different API
+//TODO: pin color combos
 //TODO: rest of station fragment layout
-//TODO: possibly add Firebase
 
 package dk.kea.class2019january.mathiasg.chargefinder;
 
@@ -133,6 +132,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     //  places markers on map
     public void placeMarkers(List<ChargePoint> chargePointList)
     {
+
         for(ChargePoint chargePoint : chargePointList)
         {
             LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
@@ -165,7 +165,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
 
-
             Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
             Bitmap red = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.red_dot);
             Bitmap blue = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.blue_dot);
@@ -182,6 +181,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             markers.put(marker, chargePoint);
         }
     }
+
     /*
     public void placeMarkers(List<Station> stationList)
     {
@@ -304,6 +304,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG, "onBackPressed called");
         onBackPressed();
 
+        mMap.clear();
+
         loadFilter();
 
         placeMarkers(chargePointList);
@@ -369,9 +371,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //  Animate to camera position
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        //Code to move google logo to top right
-        //mMap.setPadding(20, 0, 0, 1800);
-
     }
 
     private Bitmap mergeToPin(Bitmap pin, Bitmap green, Bitmap blue, Bitmap red, Bitmap yellow){
@@ -383,10 +382,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if(type2State)
         {
             canvas.drawBitmap(green, 55, 30, null);
+        }
+
+        /*
             canvas.drawBitmap(blue, 85, 60, null);
             canvas.drawBitmap(red, 55, 90, null);
             canvas.drawBitmap(yellow, 25, 60, null);
-        }
+         */
 
         return result;
     }
