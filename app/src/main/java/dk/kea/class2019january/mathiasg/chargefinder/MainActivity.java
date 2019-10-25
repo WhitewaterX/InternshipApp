@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setupViews();
         loadFilter();
 
-        /*
+
         stationList = new ArrayList<>();
 
         //  Set up viewmodel
@@ -100,8 +100,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 stationList.addAll(stations);
             }
         });
-         */
 
+        /*
         chargePointList = new ArrayList<>();
 
         //  Set up viewmodel
@@ -121,6 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 chargePointList.addAll(chargePoints);
             }
         });
+         */
     }
 
     //  places markers on map
@@ -223,7 +224,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     {
         onBackPressed();
 
-        System.out.println(chargePointList);
+        System.out.println(stationList);
     }
 
     public void openFilterFragment()

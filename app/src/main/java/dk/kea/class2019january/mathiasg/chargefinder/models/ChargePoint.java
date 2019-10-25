@@ -1,21 +1,12 @@
 package dk.kea.class2019january.mathiasg.chargefinder.models;
 
-import com.google.gson.annotations.Expose;
-
 import java.util.ArrayList;
 
 public class ChargePoint
 {
-    @Expose
     private int ID;
-
-    @Expose
     private OperatorInfo operatorInfo;
-
-    @Expose
     private AddressInfo addressInfo;
-
-    @Expose
     private ArrayList<Connections> connections;
 
     public ChargePoint(int ID, OperatorInfo operatorInfo, AddressInfo addressInfo, ArrayList<Connections> connections)
