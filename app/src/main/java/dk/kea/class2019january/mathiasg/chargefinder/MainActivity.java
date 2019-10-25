@@ -38,8 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dk.kea.class2019january.mathiasg.chargefinder.models.ChargePoint;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Connector;
 import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.ChargePointViewModel;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.StationViewModel;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, StationFragment.stationOnFragmentInteractionListener
@@ -61,8 +63,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private StationViewModel stationViewModel;
     private ArrayList<Station> stationList;
 
+    private ChargePointViewModel chargePointViewModel;
+    private ArrayList<ChargePoint> chargePointList;
+
     //  marker data storage, also used for when opening station fragment
     private Map<Marker, Station> markers = new HashMap<>();
+    private Map<Marker, ChargePoint> markersCharge = new HashMap<>();
 
     private boolean type2State;
 
@@ -74,6 +80,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setupViews();
         loadFilter();
 
+        /*
         stationList = new ArrayList<>();
 
         //  Set up viewmodel
@@ -91,6 +98,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "onChanged called");
 
                 stationList.addAll(stations);
+            }
+        });
+         */
+
+        chargePointList = new ArrayList<>();
+
+        //  Set up viewmodel
+        chargePointViewModel = ViewModelProviders.of(this).get(ChargePointViewModel.class);
+
+        //  retrieves data from repo
+        chargePointViewModel.init();
+
+        //  observe changes
+        chargePointViewModel.getChargePoints().observe(this, new Observer<List<ChargePoint>>()
+        {
+            @Override
+            public void onChanged(List<ChargePoint> chargePoints)
+            {
+                Log.d(TAG, "onChanged called");
+
+                chargePointList.addAll(chargePoints);
             }
         });
     }
@@ -169,6 +197,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 openAboutFragment();
             }
         });
+
         filterButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -193,6 +222,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void aboutOnFragmentInteraction()
     {
         onBackPressed();
+
+        System.out.println(chargePointList);
     }
 
     public void openFilterFragment()
@@ -213,7 +244,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         loadFilter();
 
-        placeMarkers(stationList);
+        //placeMarkers(stationList);
 
     }
 
@@ -254,6 +285,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker)
             {
+
                 //  gets station
                 Station station = markers.get(marker);
                 openStationFragment(station);

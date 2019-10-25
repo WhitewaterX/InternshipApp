@@ -22,7 +22,7 @@ public class ChargePointViewModel extends ViewModel
     {
         repo = ChargePointRepository.getInstance();
 
-        repo.getDataFromOplad(new RepoCallback<List<ChargePoint>>()
+        repo.getDataFromOpen(new RepoCallback<List<ChargePoint>>()
         {
             @Override
             public void onSuccess(List<ChargePoint> result)

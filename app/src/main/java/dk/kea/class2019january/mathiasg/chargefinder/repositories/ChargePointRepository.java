@@ -2,7 +2,8 @@ package dk.kea.class2019january.mathiasg.chargefinder.repositories;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +34,20 @@ public class ChargePointRepository
         return instance;
     }
 
+    Gson gson = new GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
+            .create();
+
     //  Retrofit for Opladdinelbil, using Gson
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.openchargemap.io/v3/poi/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
 
-    //  Retrofit brings life to the methods in the Oplad interface
+    //  Retrofit brings life to the methods in the open interface
     OpenApi openApi = retrofit.create(OpenApi.class);
 
-    public void getDataFromOplad(final RepoCallback<List<ChargePoint>> callback)
+    public void getDataFromOpen(final RepoCallback<List<ChargePoint>> callback)
     {
         Call<ArrayList<ChargePoint>> call = openApi.getChargePoints();
 

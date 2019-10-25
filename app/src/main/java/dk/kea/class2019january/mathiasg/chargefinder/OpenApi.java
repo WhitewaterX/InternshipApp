@@ -8,6 +8,6 @@ import retrofit2.http.GET;
 
 public interface OpenApi
 {
-    @GET("?output=json&countrycode=DK&maxresults=1&opendata=true")
+    @GET("?output=json&countrycode=DK&opendata=true&maxresults=2")
     Call<ArrayList<ChargePoint>> getChargePoints();
 }
