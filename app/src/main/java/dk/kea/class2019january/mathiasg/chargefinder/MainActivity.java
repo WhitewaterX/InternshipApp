@@ -132,11 +132,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     //  places markers on map
     public void placeMarkers(List<ChargePoint> chargePointList)
     {
-
         for(ChargePoint chargePoint : chargePointList)
         {
+            //  gets coords
             LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
 
+            //  flags for which colors to draw
             boolean greenColor = false;
             boolean blueColor = false;
             boolean redColor = false;
@@ -144,6 +145,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             for(Connection connection : chargePoint.getConnections())
             {
+                //  if the user has filtered, and one of the connections to a charge point is the
+                //  desired type, sets flag to true
 
                 if(type2State && connection.getConnectionType().getTitle().contains("Mennekes (Type 2"))
                 {
@@ -164,17 +167,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     yellowColor = true;
                 }
-
             }
 
+            //  if any flag was set to true, draw markers.
             if(greenColor || blueColor || redColor || yellowColor)
             {
-
+                //  merges pin and color bitmaps for a marker
                 Bitmap merged = mergeToPin(greenColor, blueColor, redColor, yellowColor);
+                //  draws bitmap
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(pos)
                         .icon(BitmapDescriptorFactory.fromBitmap(merged)));
-
                 markers.put(marker, chargePoint);
             }
 
@@ -304,6 +307,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         onBackPressed();
 
         markers.clear();
+        mMap.clear();
 
         loadFilter();
 
@@ -350,8 +354,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
 
                 //  gets station
+                /*
                 ChargePoint chargePoint = markers.get(marker);
                 openStationFragment(chargePoint);
+
+                 */
                 return false;
             }
         });
