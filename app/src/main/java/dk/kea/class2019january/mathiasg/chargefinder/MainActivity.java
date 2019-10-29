@@ -1,5 +1,6 @@
-//TODO: pin color combos
+//TODO: pass data to fragment and not get null pointers lol
 //TODO: rest of station fragment layout
+//TODO: maybe zoom map to device location
 
 package dk.kea.class2019january.mathiasg.chargefinder;
 
@@ -51,7 +52,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public static final String TESLA = "tesla";
     public static final String CCS = "ccs";
 
-    // Map
+    //  Map
     private GoogleMap mMap;
     private boolean mLocationPermissionGranted = false;
 
@@ -83,30 +84,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setupViews();
         loadFilter();
 
-        /*
-        stationList = new ArrayList<>();
-
-        //  Set up viewmodel
-        stationViewModel = ViewModelProviders.of(this).get(StationViewModel.class);
-
-        //  retrieves data from repo
-        stationViewModel.init();
-
-        //  observe changes
-        stationViewModel.getStations().observe(this, new Observer<List<Station>>()
-        {
-            @Override
-            public void onChanged(List<Station> stations)
-            {
-                Log.d(TAG, "onChanged called");
-
-                stationList.addAll(stations);
-            }
-        });
-
-         */
-
-
         chargePointList = new ArrayList<>();
 
         //  Set up viewmodel
@@ -126,7 +103,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 chargePointList.addAll(chargePoints);
             }
         });
-
     }
 
     //  places markers on map
@@ -180,57 +156,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         .icon(BitmapDescriptorFactory.fromBitmap(merged)));
                 markers.put(marker, chargePoint);
             }
-
         }
     }
-
-    /*
-    public void placeMarkers(List<Station> stationList)
-    {
-        if(type2State)
-        {
-            for(Station station : stationList)
-            {
-                //  Boolean used to secure that only 1 marker is placed per station.
-                boolean connectorsAvailable = false;
-
-                //  check station based on area (currently static cph, can later get gps location)
-                if (station.getCityName().contains("København"))
-                {
-                    //  check if there are any available connectors and flags the boolean to true if
-                    for(Connector connector : station.getConnectors())
-                    {
-                        if (connector.getStatus().equals("Available"))
-                        {
-                            connectorsAvailable = true;
-                        }
-                    }
-                    //  places marker if a connector is available
-                    if(connectorsAvailable)
-                    {
-                        LatLng pos = new LatLng(station.getLat(), station.getLng());
-                        Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
-                        Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
-                        Bitmap merged = mergeToPin(pin, green);
-
-                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                .position(pos)
-                                .icon(BitmapDescriptorFactory.fromBitmap(merged)));
-
-                        // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
-                        markers.put(marker, station);
-                    }
-                }
-            }
-        }
-
-        else
-        {
-            mMap.clear();
-        }
-    }
-
-     */
 
     //  gets filter settings from sharedpreferences
     public void loadFilter()
@@ -354,11 +281,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
 
                 //  gets station
-                /*
+
+
                 ChargePoint chargePoint = markers.get(marker);
                 openStationFragment(chargePoint);
 
-                 */
+
                 return false;
             }
         });
