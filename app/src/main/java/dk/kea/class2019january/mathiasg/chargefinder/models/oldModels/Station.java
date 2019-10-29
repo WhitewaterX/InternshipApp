@@ -1,6 +1,8 @@
-package dk.kea.class2019january.mathiasg.chargefinder.models;
+/*package dk.kea.class2019january.mathiasg.chargefinder.models.oldModels;
 
 import java.util.ArrayList;
+
+import dk.kea.class2019january.mathiasg.chargefinder.models.oldModels.Connector;
 
 public class Station
 {
@@ -88,3 +90,5 @@ public class Station
         return connectors;
     }
 }
+
+ */

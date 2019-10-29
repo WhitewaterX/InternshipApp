@@ -26,11 +26,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import dk.kea.class2019january.mathiasg.chargefinder.models.ChargePoint;
-import dk.kea.class2019january.mathiasg.chargefinder.models.Connections;
+import dk.kea.class2019january.mathiasg.chargefinder.models.Connection;
 import dk.kea.class2019january.mathiasg.chargefinder.viewmodels.ChargePointViewModel;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback, AboutFragment.aboutOnFragmentInteractionListener, FilterFragment.filterOnFragmentInteractionListener, StationFragment.stationOnFragmentInteractionListener
@@ -135,50 +133,47 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(ChargePoint chargePoint : chargePointList)
         {
+            ArrayList<Bitmap> colorsToDraw = new ArrayList<>();
+            
             LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
+            
+            Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
 
-            boolean type2 = false;
-            boolean chademo = false;
-            boolean tesla = false;
-            boolean ccs = false;
-
-            for (Connections connections : chargePoint.getConnections())
+            for(Connection connection : chargePoint.getConnections())
             {
-                if(connections.getConnectionType().getTitle().contains("Type 2") && type2State)
+                if(type2State && connection.getConnectionType().getTitle().contains("Mennekes (Type 2"))
                 {
-                    type2 = true;
+
                 }
 
-                if(connections.getConnectionType().getTitle().contains("CHAdeMO" ))
+                if(chademoState && connection.getConnectionType().getTitle().contains("CHAdeMO"))
                 {
-                    chademo = true;
+
                 }
 
-                if(connections.getConnectionType().getTitle().contains("Tesla Supercharger"))
+                if(teslaState && connection.getConnectionType().getTitle().contains("Tesla"))
                 {
-                    tesla = true;
+                    
                 }
 
-                if(connections.getConnectionType().getTitle().contains("CCS"))
+                if(ccsState && connection.getConnectionType().getTitle().contains("CCS"))
                 {
-                    ccs = true;
+
                 }
             }
 
+            /*
+            LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
             Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
-            Bitmap red = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.red_dot);
-            Bitmap blue = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.blue_dot);
-            Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
-            Bitmap yellow = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.yellow_dot);
+            ArrayList<Bitmap> colorsToDraw = new ArrayList<>();
 
-            Bitmap merged = mergeToPin(pin, green, blue, red, yellow);
+            Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
+            Bitmap merged = mergeToPin(pin, green);
 
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(pos)
                     .icon(BitmapDescriptorFactory.fromBitmap(merged)));
-
-            // adds marker and station to the markers hashmap, which is used in opening station fragment to pass data
-            markers.put(marker, chargePoint);
+             */
         }
     }
 

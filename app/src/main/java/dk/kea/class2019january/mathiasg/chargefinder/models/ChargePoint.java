@@ -14,10 +14,10 @@ public class ChargePoint
     @SerializedName("AddressInfo")
     private AddressInfo addressInfo;
 
-    @SerializedName("Connections")
-    private ArrayList<Connections> connections;
+    @SerializedName("Connection")
+    private ArrayList<Connection> connections;
 
-    public ChargePoint(int ID, OperatorInfo operatorInfo, AddressInfo addressInfo, ArrayList<Connections> connections)
+    public ChargePoint(int ID, OperatorInfo operatorInfo, AddressInfo addressInfo, ArrayList<Connection> connections)
     {
         this.ID = ID;
         this.operatorInfo = operatorInfo;
@@ -51,7 +51,7 @@ public class ChargePoint
         return addressInfo;
     }
 
-    public ArrayList<Connections> getConnections()
+    public ArrayList<Connection> getConnections()
     {
         return connections;
     }

@@ -1,4 +1,5 @@
-package dk.kea.class2019january.mathiasg.chargefinder.models;
+/*
+package dk.kea.class2019january.mathiasg.chargefinder.models.oldModels;
 
 public class Connector
 {
@@ -30,3 +31,4 @@ public class Connector
         return status;
     }
 }
+ */

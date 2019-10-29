@@ -2,14 +2,12 @@ package dk.kea.class2019january.mathiasg.chargefinder.repositories;
 
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import dk.kea.class2019january.mathiasg.chargefinder.OpladApi;
 import dk.kea.class2019january.mathiasg.chargefinder.RepoCallback;
-import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+import dk.kea.class2019january.mathiasg.chargefinder.models.oldModels.Station;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import dk.kea.class2019january.mathiasg.chargefinder.RepoCallback;
-import dk.kea.class2019january.mathiasg.chargefinder.models.Station;
+import dk.kea.class2019january.mathiasg.chargefinder.models.oldModels.Station;
 import dk.kea.class2019january.mathiasg.chargefinder.repositories.StationRepository;
 
 public class StationViewModel extends ViewModel

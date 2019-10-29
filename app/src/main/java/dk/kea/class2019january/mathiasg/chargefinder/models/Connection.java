@@ -2,14 +2,14 @@ package dk.kea.class2019january.mathiasg.chargefinder.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Connections
+public class Connection
 {
     private int ID;
 
     @SerializedName("ConnectionType")
     private ConnectionType connectionType;
 
-    public Connections(int ID, ConnectionType connectionType)
+    public Connection(int ID, ConnectionType connectionType)
     {
         this.ID = ID;
         this.connectionType = connectionType;
@@ -17,7 +17,7 @@ public class Connections
 
     public String toString()
     {
-        return "Connections{" +
+        return "Connection{" +
                 "ID=" + ID +
                 ", connectionType=" + connectionType +
                 '}';
