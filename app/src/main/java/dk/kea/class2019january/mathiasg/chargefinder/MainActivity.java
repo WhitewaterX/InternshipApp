@@ -26,9 +26,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -133,47 +135,44 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(ChargePoint chargePoint : chargePointList)
         {
-            ArrayList<Bitmap> colorsToDraw = new ArrayList<>();
-            
             LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
-            
-            Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
+
+            boolean greenColor = false;
+            boolean blueColor = false;
+            boolean redColor = false;
+            boolean yellowColor = false;
 
             for(Connection connection : chargePoint.getConnections())
             {
+
                 if(type2State && connection.getConnectionType().getTitle().contains("Mennekes (Type 2"))
                 {
-
+                    greenColor = true;
                 }
 
                 if(chademoState && connection.getConnectionType().getTitle().contains("CHAdeMO"))
                 {
-
+                    blueColor = true;
                 }
 
                 if(teslaState && connection.getConnectionType().getTitle().contains("Tesla"))
                 {
-                    
+                    redColor = true;
                 }
 
                 if(ccsState && connection.getConnectionType().getTitle().contains("CCS"))
                 {
-
+                    yellowColor = true;
                 }
+
             }
 
-            /*
-            LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
-            Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
-            ArrayList<Bitmap> colorsToDraw = new ArrayList<>();
-
-            Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
-            Bitmap merged = mergeToPin(pin, green);
-
+            Bitmap merged = mergeToPin(greenColor, blueColor, redColor, yellowColor);
             Marker marker = mMap.addMarker(new MarkerOptions()
                     .position(pos)
                     .icon(BitmapDescriptorFactory.fromBitmap(merged)));
-             */
+
+            markers.put(marker, chargePoint);
         }
     }
 
@@ -368,22 +367,37 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private Bitmap mergeToPin(Bitmap pin, Bitmap green, Bitmap blue, Bitmap red, Bitmap yellow){
+    private Bitmap mergeToPin(boolean greenColor, boolean blueColor, boolean redColor, boolean yellowColor)
+    {
+        Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
+        Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
+        Bitmap blue = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.blue_dot);
+        Bitmap red = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.red_dot);
+        Bitmap yellow = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.yellow_dot);
 
         Bitmap result = Bitmap.createBitmap(pin.getWidth(), pin.getHeight(), pin.getConfig());
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(pin, 0f, 0f, null);
 
-        if(type2State)
+        if(greenColor)
         {
             canvas.drawBitmap(green, 55, 30, null);
         }
 
-        /*
+        if(blueColor)
+        {
             canvas.drawBitmap(blue, 85, 60, null);
+        }
+
+        if(redColor)
+        {
             canvas.drawBitmap(red, 55, 90, null);
+        }
+
+        if(yellowColor)
+        {
             canvas.drawBitmap(yellow, 25, 60, null);
-         */
+        }
 
         return result;
     }

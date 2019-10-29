@@ -14,7 +14,7 @@ public class ChargePoint
     @SerializedName("AddressInfo")
     private AddressInfo addressInfo;
 
-    @SerializedName("Connection")
+    @SerializedName("Connections")
     private ArrayList<Connection> connections;
 
     public ChargePoint(int ID, OperatorInfo operatorInfo, AddressInfo addressInfo, ArrayList<Connection> connections)
