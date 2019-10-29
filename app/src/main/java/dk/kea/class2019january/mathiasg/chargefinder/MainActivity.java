@@ -167,12 +167,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-            Bitmap merged = mergeToPin(greenColor, blueColor, redColor, yellowColor);
-            Marker marker = mMap.addMarker(new MarkerOptions()
-                    .position(pos)
-                    .icon(BitmapDescriptorFactory.fromBitmap(merged)));
+            if(greenColor || blueColor || redColor || yellowColor)
+            {
 
-            markers.put(marker, chargePoint);
+                Bitmap merged = mergeToPin(greenColor, blueColor, redColor, yellowColor);
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(pos)
+                        .icon(BitmapDescriptorFactory.fromBitmap(merged)));
+
+                markers.put(marker, chargePoint);
+            }
+
         }
     }
 
@@ -298,7 +303,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG, "onBackPressed called");
         onBackPressed();
 
-        mMap.clear();
+        markers.clear();
 
         loadFilter();
 
