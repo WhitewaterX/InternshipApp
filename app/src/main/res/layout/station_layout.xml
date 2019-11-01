@@ -37,19 +37,41 @@
         android:id="@+id/navButton"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:text="Naviagte to this location"
-        android:fontFamily="@font/fredoka_one"
-        android:textColor="@color/colorPurple"
-        android:stateListAnimator="@null"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/navigate_button"
-        android:textAllCaps="false"
-        android:textSize="18sp"
         android:drawableStart="@drawable/icon_nav"
+        android:fontFamily="@font/fredoka_one"
         android:paddingLeft="20dp"
+        android:stateListAnimator="@null"
+        android:text="Naviagte to this location"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPurple"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/operator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/lato"
+        android:text="@string/operatedBy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stationName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="195dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/operator"></LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

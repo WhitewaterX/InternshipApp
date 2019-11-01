@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import dk.kea.class2019january.mathiasg.chargefinder.models.ChargePoint;
@@ -24,8 +25,10 @@ public class StationFragment extends Fragment
     private stationOnFragmentInteractionListener mListener;
     private ImageView closeStation;
     private TextView stationName;
+    private TextView operatorName;
     private Button navButton;
 
+    private ViewGroup linearLayout;
 
     public StationFragment()
     {
@@ -51,8 +54,15 @@ public class StationFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.station_layout, container, false);
         closeStation = view.findViewById(R.id.closeStation);
+
         stationName = view.findViewById(R.id.stationName);
         stationName.setText(mChargePoint.getAddressInfo().getAddress());
+
+        operatorName = view.findViewById(R.id.operator);
+        //  concatenates "operated by" with the operator name
+        String operatorText = getString(R.string.operatedBy) + " " + mChargePoint.getOperatorInfo().getTitle();
+        operatorName.setText(operatorText);
+
         navButton = view.findViewById(R.id.navButton);
 
         closeStation.setOnClickListener(new View.OnClickListener()
@@ -80,6 +90,11 @@ public class StationFragment extends Fragment
         });
 
         return view;
+    }
+
+    private void addLayout(ImageView plug, ImageView dot, TextView plugType)
+    {
+        View infoLayout = LayoutInflater.from(getActivity().getLayoutInflater().inflate(R.layout.info_layout, linearLayout, false));
     }
 
     //  Closes the about tab

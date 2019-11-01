@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ChargeFinder</string>
     <string name="title_activity_main">Map</string>
+    <string name="operatedBy">Operated by </string>
+
 
     <string name="google_maps_api_key">AIzaSyADOCHzheUUsbnYegNAC6qwAA0aXeaxSkg</string>
 

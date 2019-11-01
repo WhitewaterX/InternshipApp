@@ -1,4 +1,3 @@
-//TODO: pass data to fragment and not get null pointers lol
 //TODO: rest of station fragment layout
 //TODO: maybe zoom map to device location
 
@@ -105,12 +104,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    //  places markers on map
+    //  places markers on map, triggered when pressing close button on filter fragment
     public void placeMarkers(List<ChargePoint> chargePointList)
     {
         for(ChargePoint chargePoint : chargePointList)
         {
-            //  gets coords
+            //  coordinates of the charge station, used for marker
             LatLng pos = new LatLng(chargePoint.getAddressInfo().getLatitude(), chargePoint.getAddressInfo().getLongitude());
 
             //  flags for which colors to draw
@@ -121,10 +120,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             for(Connection connection : chargePoint.getConnections())
             {
-                //  if the user has filtered, and one of the connections to a charge point is the
-                //  desired type, sets flag to true
+                //  if the user has filtered for it, and one of the connections to a charge point
+                //  has the desired type, set flag to true
 
-                if(type2State && connection.getConnectionType().getTitle().contains("Mennekes (Type 2"))
+                if(type2State && connection.getConnectionType().getTitle().contains("Type 2 ("))
                 {
                     greenColor = true;
                 }
@@ -148,9 +147,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             //  if any flag was set to true, draw markers.
             if(greenColor || blueColor || redColor || yellowColor)
             {
-                //  merges pin and color bitmaps for a marker
+                //  merges pin and color bitmaps for a marker, passes booleans so mergeToPin knows
+                //  which to draw
                 Bitmap merged = mergeToPin(greenColor, blueColor, redColor, yellowColor);
-                //  draws bitmap
+
+                //  places markers, based on pin
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(pos)
                         .icon(BitmapDescriptorFactory.fromBitmap(merged)));
@@ -190,7 +191,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 openAboutFragment();
             }
         });
-
         filterButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -257,16 +257,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     {
         onBackPressed();
     }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 
     @Override
     public void onMapReady(GoogleMap googleMap)
