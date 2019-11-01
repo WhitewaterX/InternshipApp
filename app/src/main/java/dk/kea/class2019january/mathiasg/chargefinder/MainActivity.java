@@ -1,6 +1,3 @@
-//TODO: rest of station fragment layout
-//TODO: maybe zoom map to device location
-
 package dk.kea.class2019january.mathiasg.chargefinder;
 
 import androidx.fragment.app.FragmentActivity;

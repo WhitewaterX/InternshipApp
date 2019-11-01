@@ -61,11 +61,14 @@ public class FilterFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.filter_layout, container, false);
 
+        //  filter switches for toggling markers
         closeFilter = view.findViewById(R.id.closeFilter);
         type2Switch = view.findViewById(R.id.switch_type2);
         chademoSwitch = view.findViewById(R.id.switch_chademo);
         teslaSwitch = view.findViewById(R.id.switch_tesla);
         ccsSwitch = view.findViewById(R.id.switch_ccs);
+
+        //  each switch saves a state in the sharedprefs
 
         type2Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -140,6 +143,7 @@ public class FilterFragment extends Fragment
             }
         });
 
+        //  makes sure the switch state corresponds with the state in sharedprefs upon loading
         loadFilter();
         updateViews();
 
@@ -172,6 +176,7 @@ public class FilterFragment extends Fragment
         }
     }
 
+    //
     public void updateViews()
     {
         type2Switch.setChecked(type2State);
