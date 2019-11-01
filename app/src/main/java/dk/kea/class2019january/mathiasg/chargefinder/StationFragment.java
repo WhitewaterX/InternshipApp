@@ -21,13 +21,17 @@ import dk.kea.class2019january.mathiasg.chargefinder.models.Connection;
 
 public class StationFragment extends Fragment
 {
+
+    //  chargepoint object with info
     private ChargePoint chargePoint;
+
     private stationOnFragmentInteractionListener mListener;
     private ImageView closeStation;
     private TextView stationName;
     private TextView operatorName;
     private Button navButton;
 
+    //  info labels
     private ConstraintLayout type2Info;
     private ConstraintLayout ccsInfo;
     private ConstraintLayout chademoInfo;
@@ -56,14 +60,18 @@ public class StationFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.station_layout, container, false);
+
+    //  VIEW SETUPS
+
+        //  close button
         closeStation = view.findViewById(R.id.closeStation);
 
+        //  sets station name label
         stationName = view.findViewById(R.id.stationName);
         stationName.setText(chargePoint.getAddressInfo().getAddress());
 
-        operatorName = view.findViewById(R.id.operator);
-        //  concatenates "operated by" with the operator name
-
+        //  if operator field from API is null, will set text to unknown, else sets the text to
+        //  the one it downloaded
         String operatorText;
         if(chargePoint.getOperatorInfo() == null)
         {
@@ -73,14 +81,17 @@ public class StationFragment extends Fragment
         {
             operatorText = getString(R.string.operatedBy) + " " + chargePoint.getOperatorInfo().getTitle();
         }
-
+        operatorName = view.findViewById(R.id.operator);
         operatorName.setText(operatorText);
 
+        //  Constraintlayouts for info labels
         type2Info = view.findViewById(R.id.type2_info);
         ccsInfo = view.findViewById(R.id.ccs_info);
         chademoInfo = view.findViewById(R.id.chademo_info);
         teslaInfo = view.findViewById(R.id.tesla_info);
 
+        //  Will hide or show the info labels, which are the constraintlayouts, based on what type
+        //  of connection the chargepoint has
         for(Connection connection : chargePoint.getConnections())
         {
             if(connection.getConnectionType().getTitle().contains("Type 2 ("))
@@ -104,6 +115,7 @@ public class StationFragment extends Fragment
             }
         }
 
+        //  Button for navigation
         navButton = view.findViewById(R.id.navButton);
 
         closeStation.setOnClickListener(new View.OnClickListener()

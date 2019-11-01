@@ -45,6 +45,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 {
     private static final String TAG = "MainActivity";
 
+    //  for storing filter info in sharedprefs
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String TYPE2 = "type2";
     public static final String CHADEMO = "chademo";
@@ -61,15 +62,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FrameLayout fragmentContainer;
 
     //  data from api
-    //private StationViewModel stationViewModel;
-    //private ArrayList<Station> stationList;
     private ChargePointViewModel chargePointViewModel;
     private ArrayList<ChargePoint> chargePointList;
 
-    //  marker data storage, also used for when opening station fragment
-    //private Map<Marker, Station> markers = new HashMap<>();
+    //  marker info storage, also used for when opening station fragment to pass info to fragment
     private Map<Marker, ChargePoint> markers = new HashMap<>();
 
+    //  booleans for filter options
     private boolean type2State;
     private boolean chademoState;
     private boolean teslaState;
@@ -81,8 +80,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupViews();
+        //  loads the filter states from sharedprefs
         loadFilter();
 
+        //  list for charge point stations
         chargePointList = new ArrayList<>();
 
         //  Set up viewmodel
@@ -91,7 +92,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         //  retrieves data from repo
         chargePointViewModel.init();
 
-        //  observe changes
+        //  observe changes and add to list
         chargePointViewModel.getChargePoints().observe(this, new Observer<List<ChargePoint>>()
         {
             @Override
@@ -230,14 +231,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void filterOnFragmentInteraction()
     {
+        //  When closing filter fragment
         Log.d(TAG, "onBackPressed called");
         onBackPressed();
 
+        //  resets markers
         markers.clear();
         mMap.clear();
 
+        //  gets filter states
         loadFilter();
 
+        //  places new markers
         placeMarkers(chargePointList);
     }
 
@@ -270,8 +275,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             {
 
                 //  gets station
-
-
                 ChargePoint chargePoint = markers.get(marker);
                 openStationFragment(chargePoint);
 
@@ -295,18 +298,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+    //  merges bitmaps to a single pin, for a charge point on the map
     private Bitmap mergeToPin(boolean greenColor, boolean blueColor, boolean redColor, boolean yellowColor)
     {
+        //  pin-background and colors
         Bitmap pin = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.pin);
         Bitmap green = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.green_dot);
         Bitmap blue = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.blue_dot);
         Bitmap red = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.red_dot);
         Bitmap yellow = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.yellow_dot);
 
+        //  new canvas based off of pin
         Bitmap result = Bitmap.createBitmap(pin.getWidth(), pin.getHeight(), pin.getConfig());
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(pin, 0f, 0f, null);
 
+        //  if the booleans passed into the method are true, the method will draw a dot for that pin
         if(greenColor)
         {
             canvas.drawBitmap(green, 55, 30, null);
