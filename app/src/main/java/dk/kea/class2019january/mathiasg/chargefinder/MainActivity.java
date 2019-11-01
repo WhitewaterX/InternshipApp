@@ -239,7 +239,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         loadFilter();
 
         placeMarkers(chargePointList);
-
     }
 
     public void openStationFragment(ChargePoint chargePoint)
@@ -294,7 +293,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         //  Animate to camera position
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
     }
 
     private Bitmap mergeToPin(boolean greenColor, boolean blueColor, boolean redColor, boolean yellowColor)
