@@ -35,7 +35,7 @@ public class ChargePointRepository
         return instance;
     }
 
-    //  Retrofit for Opladdinelbil, using Gson
+    //  Retrofit for Openchargemap, using Gson
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.openchargemap.io/v3/poi/")
             .addConverterFactory(GsonConverterFactory.create())
